@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Review — PRD Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f3;
+    --bg2: #ffffff;
+    --bg3: #f0efe9;
+    --border: #e4e2da;
+    --border2: #ccc9bf;
+    --text: #1a1916;
+    --text2: #6b6860;
+    --text3: #a8a59d;
+    --accent: #2563eb;
+    --accent-bg: #eff6ff;
+    --purple: #7c3aed;
+    --purple-bg: #f5f3ff;
+    --warn: #d97706;
+    --warn-bg: #fffbeb;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --radius: 8px;
+    --font-mono: 'DM Mono', monospace;
+    --font-sans: 'DM Sans', sans-serif;
+    --font-serif: 'Lora', serif;
+  }
+
+  html { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 14px; line-height: 1.6; overflow: hidden; }
+  body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+  header {
+    height: 58px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 16px; gap: 12px;
+    position: sticky; top: 0; background: var(--bg2); z-index: 100;
+  }
+  .logo { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .logo-mark { width: 22px; height: 22px; background: var(--text); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: var(--bg2); font-size: 10px; font-weight: 500; }
+  .header-url-wrap { position: absolute; left: 50%; transform: translateX(-50%); width: min(740px, calc(100vw - 560px)); min-width: 420px; display: flex; gap: 8px; align-items: center; }
+  .header-spacer { flex: 1; }
+  .header-badge { font-family: var(--font-mono); font-size: 10px; color: var(--text3); border: 1px solid var(--border); padding: 3px 8px; border-radius: 4px; background: var(--bg3); flex-shrink: 0; }
+  .header-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; color: var(--text2); flex-shrink: 0; }
+
+  main { flex: 1; min-height: 0; display: grid; grid-template-columns: 420px minmax(0, 1fr); height: calc(100vh - 58px); overflow: hidden; }
+
+  /* Left */
+  .left-panel { min-height: 0; border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; background: var(--bg2); }
+
+  .url-input { flex: 1; height: 36px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 7px 12px; font-family: var(--font-mono); font-size: 12px; color: var(--text); outline: none; transition: border-color 0.15s, box-shadow 0.15s; min-width: 0; }
+  .url-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+  .url-input::placeholder { color: var(--text3); }
+  .analyze-btn { background: var(--text); color: var(--bg2); border: none; border-radius: var(--radius); padding: 0 18px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.15s, transform 0.1s; display: flex; align-items: center; gap: 5px; height: 36px; }
+  .analyze-btn:hover { background: #333; }
+  .analyze-btn:active { transform: scale(0.97); }
+  .analyze-btn.loading { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); cursor: not-allowed; }
+  .btn-spinner { width: 10px; height: 10px; border: 1.5px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Critique panel */
+  .critique-panel { flex: 1; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; padding: 18px 20px; display: flex; flex-direction: column; gap: 20px; }
+  .critique-panel::-webkit-scrollbar { width: 3px; }
+  .critique-panel::-webkit-scrollbar-track { background: transparent; }
+  .critique-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .sec-title,
+  .sec-title-bold {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    letter-spacing: 0;
+  }
+  .sec-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .sec-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* Completeness block */
+  .completeness-block { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s, background 0.15s; }
+  .completeness-block.is-incomplete { background: var(--red-bg); border-color: rgba(220,38,38,0.55); box-shadow: 0 0 0 3px rgba(220,38,38,0.08); }
+  .completeness-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+  .completeness-block.is-incomplete .completeness-header { background: var(--red-bg); border-bottom-color: rgba(220,38,38,0.22); }
+  .status-pill { font-family: var(--font-mono); font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 4px; }
+  .pill-incomplete { background: var(--red); color: var(--bg2); border: 1px solid var(--red); }
+  .pill-complete { background: var(--green-bg); color: var(--green); border: 1px solid rgba(22,163,74,0.15); }
+  .completeness-sub { font-size: 12px; color: var(--text2); }
+  .completeness-block.is-incomplete .completeness-sub { color: var(--red); font-weight: 600; }
+  .missing-items { padding: 8px 14px; display: flex; flex-direction: column; gap: 5px; }
+  .completeness-block.is-incomplete .missing-items { background: rgba(255,255,255,0.7); }
+  .missing-row { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: var(--warn); line-height: 1.5; }
+  .missing-icon { flex-shrink: 0; margin-top: 1px; }
+
+  /* Summary */
+  .summary-block { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .summary-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text); line-height: 1.6; transition: background 0.1s; }
+  .summary-item:last-child { border-bottom: none; }
+  .summary-item:hover { background: var(--bg3); }
+  .summary-bullet { width: 4px; height: 4px; background: var(--accent); border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
+
+  /* Critique */
+  .critique-filter-bar { display: flex; gap: 5px; align-items: center; margin-bottom: 12px; }
+  .filter-label { font-family: var(--font-mono); font-size: 10px; color: var(--text3); }
+  .filter-chip { font-family: var(--font-mono); font-size: 10px; padding: 3px 9px; border-radius: 4px; cursor: pointer; border: 1px solid var(--border); color: var(--text2); background: var(--bg3); transition: all 0.12s; user-select: none; }
+  .filter-chip:hover { border-color: var(--border2); color: var(--text); }
+  .filter-chip.f-all { background: var(--text); color: var(--bg2); border-color: var(--text); }
+  .filter-chip.f-logic { background: var(--accent-bg); color: var(--accent); border-color: rgba(37,99,235,0.2); }
+  .filter-chip.f-ux { background: var(--purple-bg); color: var(--purple); border-color: rgba(124,58,237,0.2); }
+  .filter-chip.f-edge { background: var(--red-bg); color: var(--red); border-color: rgba(220,38,38,0.15); }
+
+  .critique-group { margin-bottom: 12px; }
+  .critique-group.hidden { display: none; }
+  .cg-label { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); padding: 2px 0 6px; display: flex; align-items: center; gap: 6px; }
+  .cg-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .cg-line { flex: 1; height: 1px; background: var(--border); }
+
+  .critique-item { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 11px 13px; margin-bottom: 5px; transition: border-color 0.15s, box-shadow 0.15s; }
+  .critique-item:last-child { margin-bottom: 0; }
+  .critique-item:hover { border-color: var(--border2); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .ci-top { display: flex; align-items: flex-start; gap: 8px; }
+  .ci-num { font-family: var(--font-mono); font-size: 10px; color: var(--text3); flex-shrink: 0; margin-top: 1px; width: 16px; }
+  .ci-body { flex: 1; }
+  .ci-issue { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
+  .ci-question { font-size: 11.5px; color: var(--text2); line-height: 1.65; font-family: var(--font-serif); font-style: italic; }
+  .ci-tag { font-family: var(--font-mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; margin-top: 1px; }
+  .tag-logic { background: var(--accent-bg); color: var(--accent); border: 1px solid rgba(37,99,235,0.15); }
+  .tag-ux { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(124,58,237,0.15); }
+  .tag-edge { background: var(--red-bg); color: var(--red); border: 1px solid rgba(220,38,38,0.12); }
+
+  /* Empty */
+  .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--text3); padding: 40px 20px; }
+  .empty-text { font-size: 12px; text-align: center; line-height: 1.7; font-family: var(--font-serif); color: var(--text3); }
+
+  /* Right */
+  .right-panel { min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+  .right-toolbar { height: 54px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 18px; gap: 10px; background: var(--bg2); }
+  .toolbar-tabs { display: flex; gap: 2px; }
+  .toolbar-tab { font-family: var(--font-mono); font-size: 10px; padding: 7px 14px; border-radius: 6px; cursor: pointer; color: var(--text3); border: 1px solid transparent; transition: all 0.12s; }
+  .toolbar-tab:hover { color: var(--text2); background: var(--bg3); }
+  .toolbar-tab.active { color: var(--text); border-color: var(--border); background: var(--bg3); font-weight: 500; }
+  .toolbar-spacer { flex: 1; }
+  .toolbar-action { height: 30px; font-family: var(--font-mono); font-size: 10px; color: var(--text2); background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 0 12px; cursor: pointer; transition: all 0.12s; display: flex; align-items: center; gap: 4px; }
+  .toolbar-action:hover { color: var(--text); border-color: var(--border2); }
+
+  .prototype-wrap { flex: 1; min-height: 0; overflow: hidden; position: relative; }
+  .prototype-frame { width: 100%; height: 100%; border: none; background: #fff; }
+
+  .loading-overlay { position: fixed; inset: 58px 0 0; background: rgba(255,255,255,0.86); backdrop-filter: blur(1px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; z-index: 90; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .loading-overlay.visible { opacity: 1; pointer-events: all; }
+  .loading-bar-wrap { width: 180px; height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
+  .loading-bar { height: 100%; background: var(--accent); border-radius: 1px; width: 0%; transition: width 0.4s ease; }
+  .loading-label { font-family: var(--font-mono); font-size: 11px; color: var(--text2); }
+  .loading-step { font-family: var(--font-mono); font-size: 10px; color: var(--text3); }
+  .critique-panel.is-loading { background: var(--bg2); }
+
+  .wireflow-view { flex: 1; overflow-y: auto; padding: 24px; display: none; }
+  .wireflow-view.active { display: block; }
+
+  @media (max-width: 1180px) {
+    .header-url-wrap { width: min(620px, calc(100vw - 430px)); min-width: 360px; }
+    main { grid-template-columns: 380px minmax(0, 1fr); }
+  }
+
+  @media (max-width: 920px) {
+    .header-url-wrap { position: static; transform: none; flex: 1; width: auto; min-width: 0; }
+    .header-badge { display: none; }
+    main { grid-template-columns: 340px minmax(0, 1fr); }
+    .critique-panel { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><div class="logo-mark">DR</div>design·review</div>
+  <div class="header-url-wrap">
+    <input class="url-input" id="url-input" placeholder="https://confluence.shopee.io/x/..." value="https://confluence.shopee.io/display/SCPM/Chat+UI+Revamp" />
+    <button class="analyze-btn" id="analyze-btn" onclick="startAnalysis()">
+      <span id="btn-text">Analyze</span>
+    </button>
+  </div>
+  <div class="header-spacer"></div>
+  <div class="header-badge">Claude Sonnet 4.6</div>
+  <div class="header-avatar">AG</div>
+</header>
+
+<main>
+  <div class="left-panel">
+    <div class="critique-panel" id="critique-panel">
+      <div class="empty-state">
+        <div class="empty-text">输入 Confluence 链接<br>点击 Analyze 开始分析</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="right-panel">
+    <div class="right-toolbar">
+      <div class="toolbar-tabs">
+        <div class="toolbar-tab active" onclick="switchTab(this,'prototype')">Prototype</div>
+        <div class="toolbar-tab" onclick="switchTab(this,'wireflow')">Wireflow</div>
+      </div>
+      <div class="toolbar-spacer"></div>
+      <div class="toolbar-action" onclick="copyShare(this)">⎘ Share</div>
+      <div class="toolbar-action">↓ Export</div>
+    </div>
+
+    <div class="prototype-wrap" id="prototype-wrap">
+      <iframe class="prototype-frame" id="prototype-frame" srcdoc=""></iframe>
+    </div>
+    <div class="wireflow-view" id="wireflow-view"></div>
+  </div>
+</main>
+
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-label" id="loading-label">Fetching PRD...</div>
+  <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
+  <div class="loading-step" id="loading-step">Connecting to Confluence</div>
+</div>
+
+<script>
+const MOCK = {
+  complete: false,
+  missing: ['Mockup / 设计示例（无原型图或参考）','异常/边界场景未定义（断网、权限、空状态）'],
+  summary: [
+    '取消横向 Chat Tab，改为右侧 Side Bar 承载所有渠道会话列表',
+    'Side Bar 分三类：Real Time（Chat + Social Private + Call）、NRT（Email / Webform / Social Public）、Case',
+    'Case Field、Case Summary、Internal Note 从左侧迁移至右侧 Side Bar',
+    '顶部栏新增 Agent Console 快速入口按钮，位置待定（左 or 右）',
+    '新增 Filter 支持快速筛选会话，各渠道信息结构差异化展示',
+  ],
+  critiques: {
+    logic: [
+      { issue: '四种 Case Summary 组合逻辑冲突', question: 'AA+新UI / AA+旧UI / SOPA+新UI / SOPA+旧UI 展示逻辑不同，设计师需要出几套方案？这直接影响设计排期。' },
+      { issue: 'Case Field 必填字段梳理未完成', question: 'PRD 附了 spreadsheet 链接但内容未在文档内呈现，升级/不升级两种场景的必填逻辑差异是否已确认？' },
+      { issue: 'Supervisor 视角完全缺失', question: 'Filter 展示逻辑里 Supervisor 标注"？？"，这个角色的 Side Bar 内容需要单独设计吗？还是复用 Agent 视角？' },
+    ],
+    ux: [
+      { issue: 'Agent Console 入口位置未决策', question: '顶部 bar 左侧还是右侧？PRD 列出两个选项但未给出决策依据，这个位置直接影响整体布局的视觉重心。' },
+      { issue: 'Hybrid skill Agent 分类展示', question: '同时处理 chat + email 的 Agent，Real Time 和 NRT 会话如何分类？切换逻辑是什么？' },
+      { issue: 'Social Media Public vs Private 视觉一致性', question: '两者信息结构不同，在同一 Side Bar 里如何保持一致性，不让 Agent 混淆渠道类型？' },
+    ],
+    edge: [
+      { issue: 'Internal Note 必填阻断交互方式', question: '必填场景下是阻断式弹出（强制填写才能关闭）还是非阻断提示？对 Agent 工作效率影响截然不同。' },
+      { issue: '断网 / 空状态未定义', question: 'Side Bar 无会话、网络断开、加载失败时分别展示什么？这些边界状态在 PRD 中完全缺失。' },
+      { issue: 'Chaser 倒计时与 SLA 双计时冲突', question: '同一会话同时显示 SLA 和 Chaser 倒计时，哪个更紧急时如何处理视觉冲突？' },
+    ]
+  }
+};
+
+const GROUPS = [
+  { key:'logic', label:'产品逻辑', dot:'#2563eb' },
+  { key:'ux',    label:'UX 交互',  dot:'#7c3aed' },
+  { key:'edge',  label:'Edge Case', dot:'#dc2626' },
+];
+
+function renderResults(data) {
+  const panel = document.getElementById('critique-panel');
+
+  const missingHTML = data.missing.map(m =>
+    `<div class="missing-row"><span class="missing-icon">↳</span><span>${m}</span></div>`
+  ).join('');
+
+  const summaryHTML = data.summary.map(s =>
+    `<div class="summary-item"><div class="summary-bullet"></div><span>${s}</span></div>`
+  ).join('');
+
+  const totalCount = Object.values(data.critiques).reduce((a,g) => a + g.length, 0);
+
+  const critiqueGroupsHTML = GROUPS.map(g => {
+    const items = data.critiques[g.key] || [];
+    if (!items.length) return '';
+    const itemsHTML = items.map((c,i) => `
+      <div class="critique-item">
+        <div class="ci-top">
+          <div class="ci-num">${String(i+1).padStart(2,'0')}</div>
+          <div class="ci-body">
+            <div class="ci-issue">${c.issue}</div>
+            <div class="ci-question">${c.question}</div>
+          </div>
+          <div class="ci-tag tag-${g.key}">${g.key}</div>
+        </div>
+      </div>`).join('');
+    return `
+      <div class="critique-group" data-group="${g.key}">
+        <div class="cg-label">
+          <div class="cg-dot" style="background:${g.dot}"></div>
+          ${g.label} <span style="opacity:0.6">(${items.length})</span>
+          <div class="cg-line"></div>
+        </div>
+        ${itemsHTML}
+      </div>`;
+  }).join('');
+
+  panel.innerHTML = `
+    <div>
+      <div class="sec-head"><div class="sec-title">Completeness</div><div class="sec-line"></div></div>
+      <div class="completeness-block ${data.complete ? 'is-complete':'is-incomplete'}">
+        <div class="completeness-header">
+          <div class="status-pill ${data.complete ? 'pill-complete':'pill-incomplete'}">${data.complete ? 'Complete':'Incomplete'}</div>
+          <div class="completeness-sub">${data.missing.length > 0 ? `缺少 ${data.missing.length} 项关键信息`:'所有维度已覆盖'}</div>
+        </div>
+        ${data.missing.length ? `<div class="missing-items">${missingHTML}</div>`:'' }
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-head"><div class="sec-title-bold">设计改动点</div><div class="sec-line"></div></div>
+      <div class="summary-block">${summaryHTML}</div>
+    </div>
+
+    <div>
+      <div class="sec-head"><div class="sec-title">Critique · ${totalCount} items</div><div class="sec-line"></div></div>
+      <div class="critique-filter-bar">
+        <span class="filter-label">filter</span>
+        <span class="filter-chip f-all" onclick="setFilter('all',this)">All</span>
+        <span class="filter-chip" onclick="setFilter('logic',this)">产品逻辑</span>
+        <span class="filter-chip" onclick="setFilter('ux',this)">UX</span>
+        <span class="filter-chip" onclick="setFilter('edge',this)">Edge</span>
+      </div>
+      <div id="critique-groups">${critiqueGroupsHTML}</div>
+    </div>`;
+
+  document.getElementById('prototype-frame').srcdoc = getProtoHTML();
+}
+
+function setFilter(type, el) {
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    c.className = 'filter-chip';
+  });
+  const classMap = { all:'f-all', logic:'f-logic', ux:'f-ux', edge:'f-edge' };
+  el.classList.add(classMap[type]);
+  document.querySelectorAll('.critique-group').forEach(g => {
+    g.classList.toggle('hidden', type !== 'all' && g.dataset.group !== type);
+  });
+}
+
+function startAnalysis() {
+  const btn = document.getElementById('analyze-btn');
+  const btnText = document.getElementById('btn-text');
+  const panel = document.getElementById('critique-panel');
+  const overlay = document.getElementById('loading-overlay');
+  const bar = document.getElementById('loading-bar');
+  const label = document.getElementById('loading-label');
+  const step = document.getElementById('loading-step');
+
+  btn.classList.add('loading'); btn.disabled = true;
+  btnText.innerHTML = '<span class="btn-spinner"></span> Analyzing';
+  panel.innerHTML = '';
+  panel.classList.add('is-loading');
+  bar.style.width = '0%';
+  overlay.classList.add('visible');
+
+  const steps = [
+    { label:'Fetching PRD...', step:'Connecting to Confluence', pct:15 },
+    { label:'Parsing content...', step:'Reading page structure', pct:35 },
+    { label:'Evaluating completeness...', step:'Running Claude analysis', pct:55 },
+    { label:'Generating Critique...', step:'Identifying design risks', pct:75 },
+    { label:'Building Prototype...', step:'Generating interactive wireflow', pct:92 },
+    { label:'Done', step:'Rendering output', pct:100 },
+  ];
+  let i = 0;
+  function next() {
+    if (i >= steps.length) {
+      setTimeout(() => {
+        overlay.classList.remove('visible');
+        panel.classList.remove('is-loading');
+        btn.classList.remove('loading'); btn.disabled = false;
+        btnText.textContent = 'Analyze';
+        renderResults(MOCK);
+      }, 300);
+      return;
+    }
+    const s = steps[i++];
+    label.textContent = s.label; step.textContent = s.step; bar.style.width = s.pct + '%';
+    setTimeout(next, 550 + Math.random() * 350);
+  }
+  next();
+}
+
+function switchTab(el, tab) {
+  document.querySelectorAll('.toolbar-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const pw = document.getElementById('prototype-wrap');
+  const wv = document.getElementById('wireflow-view');
+  pw.style.display = tab === 'prototype' ? 'block' : 'none';
+  wv.style.display = tab === 'wireflow' ? 'block' : 'none';
+  if (tab === 'wireflow') wv.innerHTML = `<div style="color:var(--text3);font-family:var(--font-mono);font-size:11px">Wireflow view — coming soon</div>`;
+}
+
+function copyShare(btn) {
+  const orig = btn.textContent;
+  btn.textContent = '✓ Copied';
+  setTimeout(() => btn.textContent = orig, 1500);
+}
+
+function getProtoHTML() {
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,sans-serif}
+body{background:#f5f5f5;height:100vh;display:flex;flex-direction:column;font-size:13px}
+.topbar{height:52px;background:#fff;border-bottom:1px solid #e8e8e8;display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0}
+.tlogo{font-size:13px;font-weight:600;color:#111}.tsp{flex:1}
+.wpill{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:3px 9px;font-size:10px;color:#92400e;cursor:pointer;position:relative;display:flex;align-items:center;gap:4px}
+.wpill .tt{display:none;position:absolute;top:26px;right:0;background:#111;color:#fff;font-size:10px;padding:5px 9px;border-radius:5px;white-space:nowrap;z-index:99}
+.wpill:hover .tt{display:block}
+.tav{width:26px;height:26px;border-radius:50%;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#5b21b6}
+.body{flex:1;display:flex;overflow:hidden}
+.sb{width:280px;background:#fff;border-right:1px solid #e8e8e8;display:flex;flex-direction:column;flex-shrink:0}
+.sbtabs{display:flex;border-bottom:1px solid #e8e8e8}
+.sbt{flex:1;padding:8px 4px;font-size:10px;text-align:center;color:#999;cursor:pointer;border-bottom:2px solid transparent}
+.sbt.a{color:#5b21b6;border-bottom-color:#5b21b6;font-weight:500}
+.sbsearch{padding:8px;border-bottom:1px solid #e8e8e8}
+.sbsearch input{width:100%;padding:5px 8px;font-size:11px;border:1px solid #e8e8e8;border-radius:5px;background:#f9f9f9;outline:none}
+.sblist{flex:1;overflow-y:auto}
+.si{padding:9px 10px;border-bottom:1px solid #f0f0f0;cursor:pointer;display:flex;gap:8px;transition:background .1s}
+.si:hover{background:#f9f9f9}.si.a{background:#f5f3ff}
+.siav{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600}
+.siinfo{flex:1;min-width:0}
+.sir1{display:flex;justify-content:space-between;margin-bottom:1px}
+.sinm{font-size:11px;font-weight:500;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px}
+.sitm{font-size:9px;color:#ccc}
+.simsg{font-size:10px;color:#999;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px}
+.simeta{display:flex;gap:4px}
+.sg{background:#f0fdf4;color:#166534;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:500}
+.sy{background:#fffbeb;color:#92400e;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:500}
+.sr{background:#fef2f2;color:#991b1b;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:500}
+.unr{background:#5b21b6;color:#fff;border-radius:8px;padding:1px 5px;font-size:9px;font-weight:600}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.chdr{height:52px;background:#fff;border-bottom:1px solid #e8e8e8;display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0}
+.chn{font-size:13px;font-weight:500;color:#111}.chs{font-size:10px;color:#888}
+.so{background:#f0fdf4;color:#166534;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:500}
+.chsp{flex:1}
+.chb{width:28px;height:28px;border-radius:5px;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#888;font-size:12px}
+.chb:hover{background:#f5f5f5}
+.chatbody{flex:1;padding:18px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.msg{display:flex;gap:8px;max-width:75%}.msg.ag{align-self:flex-end;flex-direction:row-reverse}
+.mav{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600}
+.bbl{padding:8px 11px;border-radius:10px;font-size:11px;line-height:1.5}
+.msg.user .bbl{background:#f0f0f0;color:#111}.msg.ag .bbl{background:#5b21b6;color:#fff}
+.mt{font-size:9px;color:#ccc;margin-top:2px;text-align:right}
+.chatinput{padding:10px 14px;border-top:1px solid #e8e8e8;background:#fff;display:flex;gap:8px}
+.ci2{flex:1;padding:7px 10px;font-size:12px;border:1px solid #e8e8e8;border-radius:7px;background:#f9f9f9;outline:none}
+.ci2:focus{border-color:#5b21b6}
+.sndbtn{width:32px;height:32px;background:#5b21b6;border:none;border-radius:7px;color:#fff;font-size:13px;cursor:pointer}
+.rp{width:228px;background:#fff;border-left:1px solid #e8e8e8;display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.rps{border-bottom:1px solid #f0f0f0}
+.rph{padding:9px 10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.rptitle{font-size:11px;font-weight:500;color:#111}
+.rpb{padding:0 10px 10px}
+.rprow{margin-bottom:6px}
+.rplbl{font-size:9px;color:#aaa;margin-bottom:1px}.rpval{font-size:11px;color:#111}
+.wpnote{background:#fffbeb;border:1px solid #fcd34d;border-radius:4px;padding:5px 7px;font-size:9px;color:#92400e;margin-top:6px;line-height:1.5}
+.ahtnum{font-size:20px;font-weight:600;color:#111;font-variant-numeric:tabular-nums}
+</style></head><body>
+<div class="topbar"><div class="tlogo">Agent Console</div><div class="tsp"></div>
+<div class="wpill">⚠ 入口位置 TBD<div class="tt">设计决策：顶部左侧 or 右侧？</div></div>
+<div class="wpill">⚠ Supervisor 未定义<div class="tt">Filter 逻辑待补充</div></div>
+<div class="tav">AG</div></div>
+<div class="body">
+<div class="sb">
+  <div class="sbtabs"><div class="sbt a" onclick="st(this,'rt')">Real Time</div><div class="sbt" onclick="st(this,'nrt')">NRT</div><div class="sbt" onclick="st(this,'case')">Case</div></div>
+  <div class="sbsearch"><input placeholder="搜索会话..."/></div>
+  <div class="sblist" id="sbl"></div>
+</div>
+<div class="main">
+  <div class="chdr">
+    <div class="siav" style="background:#dcfce7;color:#166534">TW</div>
+    <div><div class="chn">Tiago W.</div><div class="chs">Chat · BR</div></div>
+    <div class="so">Open</div><div class="chsp"></div>
+    <div class="chb">↺</div><div class="chb">✕</div>
+  </div>
+  <div class="chatbody" id="cb">
+    <div class="msg user"><div class="mav" style="background:#dcfce7;color:#166534">TW</div><div><div class="bbl">Olá, preciso de ajuda com meu voucher</div><div class="mt">14:02</div></div></div>
+    <div class="msg ag"><div class="mav" style="background:#ede9fe;color:#5b21b6">AG</div><div><div class="bbl">Olá! Pode me informar o código?</div><div class="mt">14:03</div></div></div>
+    <div class="msg user"><div class="mav" style="background:#dcfce7;color:#166534">TW</div><div><div class="bbl">SHOP2026BR não funciona</div><div class="mt">14:04</div></div></div>
+  </div>
+  <div class="chatinput">
+    <input class="ci2" id="mi" placeholder="输入消息..." onkeydown="if(event.key==='Enter'){var v=this.value.trim();if(!v)return;var b=document.getElementById('cb'),d=document.createElement('div');d.className='msg ag';d.innerHTML='<div class=mav style=background:#ede9fe;color:#5b21b6>AG</div><div><div class=bbl>'+v+'</div><div class=mt>now</div></div>';b.appendChild(d);b.scrollTop=b.scrollHeight;this.value='';}"/>
+    <button class="sndbtn">➤</button>
+  </div>
+</div>
+<div class="rp">
+  <div class="rps"><div class="rph" onclick="tog('aht')"><div class="rptitle">AHT</div><span style="font-size:10px;color:#ccc">▾</span></div><div class="rpb" id="aht"><div class="ahtnum" id="at">00:04:12</div><div style="font-size:9px;color:#aaa;margin-top:2px">处理中</div></div></div>
+  <div class="rps"><div class="rph" onclick="tog('cf')"><div class="rptitle">Case Field</div><span style="font-size:10px;color:#ccc">▾</span></div><div class="rpb" id="cf"><div class="rprow"><div class="rplbl">Case ID</div><div class="rpval">#CS-2026-8821</div></div><div class="rprow"><div class="rplbl">Issue Type</div><div class="rpval">Voucher</div></div><div class="rprow"><div class="rplbl">SLA</div><div class="sy" style="display:inline-block">18 min left</div></div><div class="wpnote">⚠ AA+新UI vs SOPA+新UI 字段逻辑待对齐</div></div></div>
+  <div class="rps"><div class="rph" onclick="tog('inn')"><div class="rptitle">Internal Note</div><span style="font-size:10px;color:#ccc">▾</span></div><div class="rpb" id="inn" style="display:none"><textarea style="width:100%;height:56px;font-size:10px;padding:5px;border:1px solid #e8e8e8;border-radius:5px;resize:none;outline:none;background:#f9f9f9" placeholder="添加备注..."></textarea><div class="wpnote">⚠ 必填时阻断 vs 非阻断？待决策</div></div></div>
+</div>
+</div>
+<script>
+var tabs={rt:[{n:'Tiago W.',m:'SHOP2026BR não funciona',t:'14:04',s:'sy',sl:'18min',u:0,bg:'#dcfce7',tc:'#166534',a:true},{n:'Ana Lima',m:'não consigo usar',t:'13:58',s:'sr',sl:'2min',u:3,bg:'#fee2e2',tc:'#991b1b',a:false},{n:'FB User',m:'Como faço...',t:'13:45',s:'sg',sl:'45min',u:1,bg:'#dbeafe',tc:'#1e40af',a:false}],nrt:[{n:'support@br.com',m:'Voucher issue #882',t:'12:30',s:'sg',sl:'2hr',u:0,bg:'#f3e8ff',tc:'#6b21a8',a:false}],case:[{n:'CS-2026-8821',m:'Voucher · Open',t:'14:00',s:'sy',sl:'18min',u:0,bg:'#fef9c3',tc:'#854d0e',a:true}]};
+var ct='rt';
+function st(el,tab){document.querySelectorAll('.sbt').forEach(t=>t.classList.remove('a'));el.classList.add('a');ct=tab;rl();}
+function rl(){var l=document.getElementById('sbl');l.innerHTML='';tabs[ct].forEach(item=>{var d=document.createElement('div');d.className='si'+(item.a?' a':'');d.innerHTML='<div class="siav" style="background:'+item.bg+';color:'+item.tc+'">'+item.n.slice(0,2).toUpperCase()+'</div><div class="siinfo"><div class="sir1"><span class="sinm">'+item.n+'</span><span class="sitm">'+item.t+'</span></div><div class="simsg">'+item.m+'</div><div class="simeta"><span class="'+item.s+'">'+item.sl+'</span>'+(item.u?'<span class="unr">'+item.u+'</span>':'')+'</div></div>';d.onclick=()=>{tabs[ct].forEach(x=>x.a=false);item.a=true;rl();};l.appendChild(d);});}
+rl();
+function tog(id){var el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
+var s=252;setInterval(()=>{s++;document.getElementById('at').textContent='00:'+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},1000);
+<\/script></body></html>`;
+}
+
+// Init
+setTimeout(() => renderResults(MOCK), 200);
+</script>
+</body>
+</html>
