@@ -660,6 +660,121 @@
       cursor: pointer;
     }
 
+    .account-profile-panel {
+      min-height: calc(100vh - var(--header-h) - 56px - 48px);
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .account-profile-header,
+    .account-profile-section {
+      padding: 24px;
+    }
+
+    .account-profile-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 0;
+    }
+
+    .account-profile-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    .account-profile-section {
+      padding-top: 28px;
+    }
+
+    .account-profile-section + .account-profile-section {
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .account-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .account-section-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 500;
+    }
+
+    .account-info-list {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      column-gap: 48px;
+      row-gap: 24px;
+      margin: 0;
+    }
+
+    .account-info-list dt,
+    .account-info-list dd {
+      margin: 0;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: 400;
+    }
+
+    .account-info-list dt {
+      color: #666;
+    }
+
+    .account-status-verified {
+      color: #55cc77;
+      font-weight: 500;
+    }
+
+    .account-document-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .account-document-card {
+      width: 112px;
+      margin: 0;
+    }
+
+    .account-document-thumb {
+      width: 112px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e5e5e5;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(238, 77, 45, 0.08), rgba(255, 255, 255, 0) 48%),
+        #fafafa;
+      color: var(--text-2);
+      font-size: 12px;
+      line-height: 16px;
+      text-align: center;
+    }
+
+    .account-document-caption {
+      display: block;
+      margin-top: 6px;
+      color: var(--text-3);
+      font-size: 12px;
+      line-height: 16px;
+      text-align: center;
+    }
+
     .service-fee-alert {
       min-height: 40px;
       display: flex;
@@ -821,10 +936,21 @@
 
     .finance-note {
       margin: 0;
-      color: var(--text-2);
+      color: var(--text);
       font-size: 14px;
       line-height: 16px;
       white-space: nowrap;
+    }
+
+    .finance-note-with-popover {
+      position: relative;
+      width: fit-content;
+      max-width: 100%;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: help;
+      outline: none;
     }
 
     .finance-note strong {
@@ -836,6 +962,115 @@
 
     .finance-note .note-strong {
       color: var(--text);
+    }
+
+    .finance-note-info-icon {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+      color: #999;
+    }
+
+    .finance-note-popover {
+      position: fixed;
+      left: var(--finance-note-popover-left, 0);
+      top: var(--finance-note-popover-top, 0);
+      z-index: 100;
+      width: 364px;
+      max-width: min(364px, calc(100vw - 64px));
+      padding: 12px 16px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      color: #666;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 400;
+      white-space: normal;
+      word-break: break-word;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate(-50%, 4px);
+      transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease;
+    }
+
+    .finance-note-popover::after {
+      content: "";
+      position: absolute;
+      left: var(--finance-note-popover-arrow-left, 50%);
+      bottom: -6px;
+      width: 12px;
+      height: 6px;
+      background: #fff;
+      clip-path: polygon(50% 100%, 0 0, 100% 0);
+      transform: translateX(-50%);
+    }
+
+    .finance-note-with-popover:hover .finance-note-popover,
+    .finance-note-with-popover:focus-visible .finance-note-popover {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    .quota-popover-formula {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .quota-popover-item {
+      width: 70px;
+      flex: 0 0 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      text-align: center;
+    }
+
+    .quota-popover-value {
+      color: #ee4d2d;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 500;
+    }
+
+    .quota-popover-label {
+      color: #999;
+      font-size: 12px;
+      line-height: 14px;
+      font-weight: 400;
+    }
+
+    .quota-popover-operator {
+      color: #666;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .quota-popover-desc {
+      width: 100%;
+      margin: 0;
+      padding: 8px;
+      background: #f6f6f6;
+      color: #666;
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 400;
+    }
+
+    .quota-popover-desc .text-highlight {
+      color: #ee4d2d;
     }
 
     .finance-card-head {
@@ -965,6 +1200,24 @@
       border: 1px solid #e5e5e5;
       border-radius: var(--radius);
       background: #fff;
+    }
+
+    .dashboard-card-footer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      margin-top: auto;
+      border-top: 1px solid #e5e5e5;
+      color: #333333;
+      font-size: 13px;
+      line-height: 18px;
+    }
+
+    .dashboard-card-footer-value {
+      font-weight: 500;
+      color: var(--text);
     }
 
     .dashboard-label {
@@ -1504,7 +1757,7 @@
       list-style: none;
     }
 
-    .service-shop-options .amount-option {
+    .service-amount-options .amount-option {
       min-height: 40px;
     }
 
@@ -1654,6 +1907,39 @@
       color: #999;
       font-size: 12px;
       line-height: 18px;
+    }
+
+    .invoice-step-desc-with-popover {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      max-width: 100%;
+      width: fit-content;
+    }
+
+    .invoice-step-desc-with-popover .finance-note-info-icon {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+    }
+
+    .invoice-eligibility-popover {
+      width: 448px;
+      max-width: min(448px, calc(100vw - 64px));
+      gap: 8px;
+    }
+
+    .invoice-eligibility-popover p {
+      margin: 0;
+    }
+
+    .invoice-eligibility-popover ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .invoice-eligibility-popover li + li {
+      margin-top: 8px;
     }
 
     .invoice-checkbox {
@@ -3150,6 +3436,15 @@
           <button class="nav-button active" data-page="service-fee">Service Fee Management</button>
           <button class="nav-button" data-page="invoice">Invoice Management</button>
         </div>
+        <div class="nav-section" data-mode="console">
+          <div class="nav-title">
+            <svg class="nav-icon-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1.5C6.34315 1.5 5 2.84315 5 4.5C5 6.15685 6.34315 7.5 8 7.5C9.65685 7.5 11 6.15685 11 4.5C11 2.84315 9.65685 1.5 8 1.5ZM6 4.5C6 3.39543 6.89543 2.5 8 2.5C9.10457 2.5 10 3.39543 10 4.5C10 5.60457 9.10457 6.5 8 6.5C6.89543 6.5 6 5.60457 6 4.5ZM3 13.5C3 10.7386 5.23858 8.5 8 8.5C10.7614 8.5 13 10.7386 13 13.5C13 14.0523 12.5523 14.5 12 14.5H4C3.44772 14.5 3 14.0523 3 13.5ZM8 9.5C5.79086 9.5 4 11.2909 4 13.5H12C12 11.2909 10.2091 9.5 8 9.5Z" fill="#999999"/>
+            </svg>
+            Personal Center
+          </div>
+          <button class="nav-button" data-page="account-info">Account Information</button>
+        </div>
       </aside>
 
       <main class="main">
@@ -3238,29 +3533,15 @@
                     </div>
 
                     <div class="upload-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人手持身份证正反面</div>
+                      <div class="verify-label"><span class="required">*</span> 法人身份证正反面照片</div>
                       <div class="upload-list" data-upload-list>
-                        <button type="button" class="upload-box" data-upload-box aria-label="上传法人手持身份证正反面">+</button>
+                        <button type="button" class="upload-box" data-upload-box aria-label="上传法人身份证正反面照片">+</button>
                         <input class="upload-input" data-upload-input type="file" accept="image/jpeg,image/png">
                       </div>
                       <ul class="upload-help">
-                        <li>请上传法人手持身份证正反面照片(请保证照片中人脸与身份证的清晰);</li>
+                        <li>请上传法人身份证正反面照片;</li>
                         <li>只支持上传jpg和png格式;</li>
                         <li>上传图片大小限制为不大于3M</li>
-                      </ul>
-                    </div>
-
-                    <div class="upload-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人手持身份证正反面+营业执照视频</div>
-                      <div class="upload-list" data-upload-list>
-                        <button type="button" class="upload-box" data-upload-box aria-label="上传法人手持身份证正反面和营业执照视频">+</button>
-                        <input class="upload-input" data-upload-input type="file" accept="video/mp4,video/avi,.avi">
-                      </div>
-                      <ul class="upload-help">
-                        <li>请确保身份证的文字和人脸及营业执照信息可清晰分辨，视频中需要分别展示出身份证正反面并且聚焦;</li>
-                        <li>支持mp4和avi格式;</li>
-                        <li>视频最大支持40M，约20秒左右;</li>
-                        <li>视频模板、指导链接</li>
                       </ul>
                     </div>
 
@@ -3297,16 +3578,16 @@
                     <div class="verify-field" data-non-mainland-only>
                       <div class="verify-label"><span class="required">*</span> 法人姓名</div>
                       <div class="text-input">
-                        <input data-count-input maxlength="60" placeholder="Input" aria-label="法人姓名">
-                        <span class="counter">0/60</span>
+                        <input data-count-input data-identity-name-input maxlength="60" value="紫红uiuiui" placeholder="Input" aria-label="法人姓名">
+                        <span class="counter">8/60</span>
                       </div>
                     </div>
 
                     <div class="verify-field" data-non-mainland-only>
                       <div class="verify-label"><span class="required">*</span> 法人身份证件号码</div>
                       <div class="text-input">
-                        <input data-count-input maxlength="60" placeholder="Input" aria-label="法人身份证件号码">
-                        <span class="counter">0/60</span>
+                        <input data-count-input data-identity-number-input maxlength="60" value="S9012345Z" placeholder="Input" aria-label="法人身份证件号码">
+                        <span class="counter">9/60</span>
                       </div>
                     </div>
 
@@ -3343,6 +3624,33 @@
                         <div class="date-popover" data-date-popover hidden></div>
                       </div>
                     </div>
+
+                    <div class="upload-field" data-non-mainland-only>
+                      <div class="verify-label"><span class="required">*</span> 法人手持身份证正反面</div>
+                      <div class="upload-list" data-upload-list>
+                        <button type="button" class="upload-box" data-upload-box aria-label="上传法人手持身份证正反面">+</button>
+                        <input class="upload-input" data-upload-input type="file" accept="image/jpeg,image/png">
+                      </div>
+                      <ul class="upload-help">
+                        <li>请上传法人手持身份证正反面照片(请保证照片中人脸与身份证的清晰);</li>
+                        <li>只支持上传jpg和png格式;</li>
+                        <li>上传图片大小限制为不大于3M</li>
+                      </ul>
+                    </div>
+
+                    <div class="upload-field" data-non-mainland-only>
+                      <div class="verify-label"><span class="required">*</span> 法人手持身份证正反面+营业执照视频</div>
+                      <div class="upload-list" data-upload-list>
+                        <button type="button" class="upload-box" data-upload-box aria-label="上传法人手持身份证正反面和营业执照视频">+</button>
+                        <input class="upload-input" data-upload-input type="file" accept="video/mp4,video/avi,.avi">
+                      </div>
+                      <ul class="upload-help">
+                        <li>请确保身份证的文字和人脸及营业执照信息可清晰分辨，视频中需要分别展示出身份证正反面并且聚焦;</li>
+                        <li>支持mp4和avi格式;</li>
+                        <li>视频最大支持40M，约20秒左右;</li>
+                        <li>视频模板、指导链接</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
@@ -3355,9 +3663,8 @@
                         <button type="button" class="btn password-outline" data-open-drawer="password">Set Password</button>
                       </div>
                       <div class="deposit-password-success">
-                        <svg class="deposit-password-success-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                          <circle cx="8" cy="8" r="8" fill="#55CC77"></circle>
-                          <path d="M4.25 8.1L6.75 10.6L11.9 5.45" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <svg class="deposit-password-success-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1.33334C4.3181 1.33334 1.33334 4.3181 1.33334 8C1.33334 11.6819 4.3181 14.6667 8 14.6667C11.6819 14.6667 14.6667 11.6819 14.6667 8C14.6667 4.3181 11.6819 1.33334 8 1.33334ZM11.1381 6.19527C11.3984 5.93492 11.3984 5.51281 11.1381 5.25246C10.8777 4.99211 10.4556 4.99211 10.1953 5.25246L7.16667 8.28106L5.80474 6.91913C5.54439 6.65878 5.12228 6.65878 4.86193 6.91913C4.60158 7.17948 4.60158 7.60159 4.86193 7.86194L6.69527 9.69527C6.95561 9.95562 7.37772 9.95562 7.63807 9.69527L11.1381 6.19527Z" fill="#52C873"/>
                         </svg>
                         <span>Password set successfully</span>
                         <button type="button" class="deposit-password-change" data-open-drawer="password">Change</button>
@@ -3457,7 +3764,31 @@
                     <p class="finance-money"><span class="currency">¥</span> 8,470.00</p>
                     <button class="btn primary" data-open-drawer="service" data-service-topup-control>Top Up</button>
                   </div>
-                  <p class="finance-note"><span class="note-strong">= </span><strong>221,4050</strong><span class="note-strong"> Shops</span> (1 Shop= 0.04 RMB)</p>
+                  <div class="finance-note finance-note-with-popover" tabindex="0" aria-describedby="shop-quota-popover">
+                    <span>Estimated Shop Quota: <strong>2500</strong><span class="note-strong"> shops</span></span>
+                    <svg class="finance-note-info-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1ZM8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2ZM7.98751 10.2375C8.40172 10.2375 8.73751 10.5733 8.73751 10.9875C8.73751 11.4017 8.40172 11.7375 7.98751 11.7375C7.57329 11.7375 7.23751 11.4017 7.23751 10.9875C7.23751 10.5733 7.57329 10.2375 7.98751 10.2375ZM8.117 4.60513C9.97012 4.60513 10.7746 6.50497 9.94298 7.72186C9.76926 7.97607 9.56587 8.14547 9.2705 8.31455L9.11487 8.39945L8.95825 8.47994C8.56296 8.68261 8.49391 8.75809 8.49391 9.02099C8.49391 9.29713 8.27005 9.52099 7.99391 9.52099C7.71777 9.52099 7.49391 9.29713 7.49391 9.02099C7.49391 8.34167 7.76504 7.99682 8.35914 7.66626L8.76655 7.45066C8.94241 7.35025 9.04308 7.26634 9.11736 7.15765C9.52116 6.56675 9.11397 5.60513 8.117 5.60513C7.41792 5.60513 6.82815 6.01273 6.75716 6.55276L6.75 6.66245L6.74194 6.75233C6.69961 6.98557 6.49546 7.16245 6.25 7.16245C5.97386 7.16245 5.75 6.93859 5.75 6.66245C5.75 5.44257 6.87194 4.60513 8.117 4.60513Z" fill="#999999"/>
+                    </svg>
+                    <div class="finance-note-popover" id="shop-quota-popover" role="tooltip">
+                      <div class="quota-popover-formula" aria-label="2500 estimated shops equals 2490 original price shops plus 10 discounted shops">
+                        <div class="quota-popover-item">
+                          <span class="quota-popover-value">2500</span>
+                          <span class="quota-popover-label">Estimated Shops</span>
+                        </div>
+                        <span class="quota-popover-operator">=</span>
+                        <div class="quota-popover-item">
+                          <span class="quota-popover-value">2490</span>
+                          <span class="quota-popover-label">Original Price Shop</span>
+                        </div>
+                        <span class="quota-popover-operator">+</span>
+                        <div class="quota-popover-item">
+                          <span class="quota-popover-value">10</span>
+                          <span class="quota-popover-label">Discounted Shop</span>
+                        </div>
+                      </div>
+                      <p class="quota-popover-desc">你有10个shop可享受<span class="text-highlight">8折</span>活动，单店每日<span class="text-highlight">0.032</span> 元（原价0.04元），折扣额度耗尽后将恢复原价计费</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="surface finance-summary-card deposit-balance-card" data-deposit-balance-card>
@@ -3493,10 +3824,31 @@
                       Current Authorized Shop Quantity
                       <span class="dashboard-info" title="Current number of authorized shops">?</span>
                     </div>
-                    <p class="dashboard-value">2,846</p>
-                    <div class="dashboard-trend">↑ 19.73%</div>
+                    <p class="dashboard-value">1,573</p>
+                    <div class="dashboard-card-footer">
+                      <span>7-Day Free Trial Store</span>
+                      <span class="dashboard-card-footer-value">43</span>
+                    </div>
                   </div>
-                  <div class="dashboard-card emphasis">
+                  <div class="dashboard-card">
+                    <div class="dashboard-card-head">
+                      <div class="dashboard-label">
+                        Daily Average Consumed Shop
+                        <span class="dashboard-info" title="Average daily number of shops consuming the service">?</span>
+                      </div>
+                      <select class="dashboard-inline-filter" aria-label="Daily average consumed shop time range">
+                        <option selected>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>Custom Date Range</option>
+                      </select>
+                    </div>
+                    <p class="dashboard-value">642</p>
+                    <div class="dashboard-card-footer">
+                      <span>Total Consumed Shop</span>
+                      <span class="dashboard-card-footer-value">4,212</span>
+                    </div>
+                  </div>
+                  <div class="dashboard-card">
                     <div class="dashboard-card-head">
                       <div class="dashboard-label">
                         Daily Average Spend
@@ -3508,23 +3860,11 @@
                         <option>Custom Date Range</option>
                       </select>
                     </div>
-                    <p class="dashboard-value">¥108.46</p>
-                    <div class="dashboard-trend down">↑ 19.73%</div>
-                  </div>
-                  <div class="dashboard-card">
-                    <div class="dashboard-card-head">
-                      <div class="dashboard-label">
-                        Total Spend
-                        <span class="dashboard-info" title="Total service fee spend in the selected period">?</span>
-                      </div>
-                      <select class="dashboard-inline-filter" aria-label="Total spend time range">
-                        <option selected>Last 7 Days</option>
-                        <option>Last 30 Days</option>
-                        <option>Custom Date Range</option>
-                      </select>
+                    <p class="dashboard-value">1,456</p>
+                    <div class="dashboard-card-footer">
+                      <span>Total Spend</span>
+                      <span class="dashboard-card-footer-value">8,563</span>
                     </div>
-                    <p class="dashboard-value">¥759.22</p>
-                    <div class="dashboard-trend down">↑ 19.73%</div>
                   </div>
                 </div>
               </div>
@@ -3816,7 +4156,19 @@
 
                   <div class="invoice-step" data-step="2" hidden>
                   <h3 class="invoice-step-title">Please select the transactions you want to invoice.</h3>
-                  <p class="invoice-step-desc">Only invoice-applicable transactions will be displayed on this page.</p>
+                  <div class="invoice-step-desc invoice-step-desc-with-popover finance-note-with-popover" tabindex="0" aria-describedby="invoice-eligibility-popover">
+                    <span>Please notice that only invoice-applicable transactions will be displayed on this page</span>
+                    <svg class="finance-note-info-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1ZM8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2ZM7.98751 10.2375C8.40172 10.2375 8.73751 10.5733 8.73751 10.9875C8.73751 11.4017 8.40172 11.7375 7.98751 11.7375C7.57329 11.7375 7.23751 11.4017 7.23751 10.9875C7.23751 10.5733 7.57329 10.2375 7.98751 10.2375ZM8.117 4.60513C9.97012 4.60513 10.7746 6.50497 9.94298 7.72186C9.76926 7.97607 9.56587 8.14547 9.2705 8.31455L9.11487 8.39945L8.95825 8.47994C8.56296 8.68261 8.49391 8.75809 8.49391 9.02099C8.49391 9.29713 8.27005 9.52099 7.99391 9.52099C7.71777 9.52099 7.49391 9.29713 7.49391 9.02099C7.49391 8.34167 7.76504 7.99682 8.35914 7.66626L8.76655 7.45066C8.94241 7.35025 9.04308 7.26634 9.11736 7.15765C9.52116 6.56675 9.11397 5.60513 8.117 5.60513C7.41792 5.60513 6.82815 6.01273 6.75716 6.55276L6.75 6.66245L6.74194 6.75233C6.69961 6.98557 6.49546 7.16245 6.25 7.16245C5.97386 7.16245 5.75 6.93859 5.75 6.66245C5.75 5.44257 6.87194 4.60513 8.117 4.60513Z" fill="currentColor"/>
+                    </svg>
+                    <div class="finance-note-popover invoice-eligibility-popover" id="invoice-eligibility-popover" role="tooltip">
+                      <p>如果交易符合以下任何一项条件，则该交易将不符合开具发票的条件，也不会显示在此页面上</p>
+                      <ul>
+                        <li>The payment completion date has exceeded 90 days. 付款完成日期已超过90天。</li>
+                        <li>If the invoice is being processed or has been issued successfully, the transaction can no longer be re-applied for and will not be displayed on this page. 发票处于处理中或已成功开具，该笔交易将不再支持重新申请，且不会在此页面显示。</li>
+                      </ul>
+                    </div>
+                  </div>
                   <div class="filter-bar plain invoice-selection-filter">
                     <div class="filter">
                       <div class="invoice-multiplex-picker" data-invoice-multiplex-picker data-range-start="2026-05-03" data-range-end="2026-05-09">
@@ -4148,6 +4500,67 @@
               </div>
             </div>
           </section>
+
+          <section class="page" id="page-account-info" data-title="Account Information" data-parent="Personal Center">
+            <div class="surface account-profile-panel">
+              <div class="account-profile-header">
+                <h1 class="account-profile-title">Developer Profile</h1>
+                <button class="btn secondary">Delete Developer Account</button>
+              </div>
+              <section class="account-profile-section" aria-labelledby="basic-information-title">
+                <div class="account-section-head">
+                  <h2 class="account-section-title" id="basic-information-title">Basic Information</h2>
+                </div>
+                <dl class="account-info-list">
+                  <dt>Developer Account</dt>
+                  <dd>fake_ziqi.temp0010@shopee.com</dd>
+                  <dt>Developer Name</dt>
+                  <dd>紫红uiuiui</dd>
+                  <dt>Developer Type</dt>
+                  <dd>Third-party Partner Platform</dd>
+                  <dt>Identity Verification status</dt>
+                  <dd><span class="account-status-verified">已认证</span></dd>
+                  <dt>ID Card Front &amp; Back Photos</dt>
+                  <dd>
+                    <div class="account-document-list" aria-label="ID card photos filled in Identity Verification">
+                      <figure class="account-document-card">
+                        <div class="account-document-thumb" aria-hidden="true">ID Card<br>Front</div>
+                        <figcaption class="account-document-caption">Front side</figcaption>
+                      </figure>
+                      <figure class="account-document-card">
+                        <div class="account-document-thumb" aria-hidden="true">ID Card<br>Back</div>
+                        <figcaption class="account-document-caption">Back side</figcaption>
+                      </figure>
+                    </div>
+                  </dd>
+                  <dt>Legal Name</dt>
+                  <dd data-account-identity-name>紫红uiuiui</dd>
+                  <dt>ID Number</dt>
+                  <dd data-account-identity-number>S9012345Z</dd>
+                  <dt>Country/Area</dt>
+                  <dd>Singapore</dd>
+                  <dt>Business Registration Number</dt>
+                  <dd>ioioio(9090901</dd>
+                </dl>
+              </section>
+              <section class="account-profile-section" aria-labelledby="business-information-title">
+                <div class="account-section-head">
+                  <h2 class="account-section-title" id="business-information-title">Business Information</h2>
+                  <button class="btn secondary">Edit</button>
+                </div>
+                <dl class="account-info-list">
+                  <dt>Phone Number</dt>
+                  <dd>65-81231235</dd>
+                  <dt>City/Town</dt>
+                  <dd>shenzhen</dd>
+                  <dt>Address</dt>
+                  <dd>nsn</dd>
+                  <dt>Postal Code</dt>
+                  <dd>90900</dd>
+                </dl>
+              </section>
+            </div>
+          </section>
         </div>
       </main>
     </div>
@@ -4179,26 +4592,26 @@
   <template id="drawer-service-template">
     <div class="modal-form-block">
       <div class="deposit-step-section">
-        <div class="deposit-step-label">Top-up Shop Quantity</div>
-        <div class="amount-options service-shop-options">
-          <button type="button" class="amount-option service-shop-option active" data-service-shops="10000">10000 Shops</button>
-          <button type="button" class="amount-option service-shop-option" data-service-shops="20000">20000 Shops</button>
-          <button type="button" class="amount-option service-shop-option" data-service-shops="50000">50000 Shops</button>
+        <div class="deposit-step-label">Top-up Amount</div>
+        <div class="amount-options service-amount-options">
+          <button type="button" class="amount-option service-amount-option active" data-service-amount="500">500 RMB</button>
+          <button type="button" class="amount-option service-amount-option" data-service-amount="1000">1000 RMB</button>
+          <button type="button" class="amount-option service-amount-option" data-service-amount="2000">2000 RMB</button>
         </div>
         <div class="deposit-amount-entry">
-          <span class="deposit-currency-prefix">Shops</span>
+          <span class="deposit-currency-prefix">¥</span>
           <span class="deposit-prefix-divider" aria-hidden="true"></span>
-          <input class="deposit-amount-input" value="10000" inputmode="numeric" aria-label="Top-up shop quantity" data-service-shop-input>
+          <input class="deposit-amount-input" value="500" inputmode="numeric" aria-label="Top-up amount" data-service-amount-input>
         </div>
         <ul class="service-topup-intro service-topup-fee-note">
           <li>The bank is expected to charge a 0.25% transaction fee for each payment. If the top-up amount is more than RMB 1,000, Shopee will cover the transaction fee.</li>
         </ul>
-        <p class="service-topup-helper" data-service-runway>Based on your authorized shop quantity in the last 14 days and current discount benefits, this top-up is estimated to last <span class="text-highlight">3.5 days</span>.</p>
+        <p class="service-topup-helper" data-service-runway>Based on your authorized shop quantity in the last 14 days and current discount benefits, this top-up is estimated to last <span class="text-highlight">4.4 days</span>.</p>
       </div>
       <div class="summary-box modal-summary">
-        <div class="summary-row"><span>Top-up Amount<span class="summary-label-hint">(1 shop = ¥0.04)</span></span><strong data-service-topup-amount>¥400.00</strong></div>
-        <div class="summary-row"><span>Transaction Fee</span><strong data-service-fee>¥1.00</strong></div>
-        <div class="summary-row total"><span>Total Amount</span><strong data-service-total>¥401.00</strong></div>
+        <div class="summary-row"><span>Top-up Amount</span><strong data-service-topup-amount>¥500.00</strong></div>
+        <div class="summary-row"><span>Transaction Fee</span><strong data-service-fee>¥1.25</strong></div>
+        <div class="summary-row total"><span>Total Amount</span><strong data-service-total>¥501.25</strong></div>
       </div>
       <ul class="service-topup-intro service-topup-billing">
         <li>Billing rule: daily deductions are settled based on the actual number of authorized shops. Each shop costs RMB 0.04 per day.</li>
@@ -4311,6 +4724,51 @@
           appToast.hidden = true;
         }, 180);
       }, 3000);
+    }
+
+    function updateFinanceNotePopoverPosition(trigger) {
+      const popover = trigger.querySelector('.finance-note-popover');
+      if (!popover) return;
+      const triggerRect = trigger.getBoundingClientRect();
+      const popoverRect = popover.getBoundingClientRect();
+      const gap = 12;
+      const viewportPadding = 16;
+      const triggerCenter = triggerRect.left + triggerRect.width / 2;
+      const halfPopoverWidth = popoverRect.width / 2;
+      const minLeft = viewportPadding + halfPopoverWidth;
+      const maxLeft = window.innerWidth - viewportPadding - halfPopoverWidth;
+      const left = Math.min(Math.max(triggerCenter, minLeft), maxLeft);
+      const top = Math.max(viewportPadding, triggerRect.top - popoverRect.height - gap);
+      const popoverLeftEdge = left - halfPopoverWidth;
+      const arrowLeft = Math.min(
+        Math.max(triggerCenter - popoverLeftEdge, 12),
+        popoverRect.width - 12
+      );
+      trigger.style.setProperty('--finance-note-popover-left', `${left}px`);
+      trigger.style.setProperty('--finance-note-popover-top', `${top}px`);
+      trigger.style.setProperty('--finance-note-popover-arrow-left', `${arrowLeft}px`);
+    }
+
+    function initFinanceNotePopovers() {
+      const triggers = Array.from(document.querySelectorAll('.finance-note-with-popover'));
+      triggers.forEach(trigger => {
+        trigger.addEventListener('mouseenter', () => updateFinanceNotePopoverPosition(trigger));
+        trigger.addEventListener('focus', () => updateFinanceNotePopoverPosition(trigger));
+      });
+      window.addEventListener('resize', () => {
+        triggers.forEach(trigger => {
+          if (trigger.matches(':hover') || document.activeElement === trigger) {
+            updateFinanceNotePopoverPosition(trigger);
+          }
+        });
+      });
+      window.addEventListener('scroll', () => {
+        triggers.forEach(trigger => {
+          if (trigger.matches(':hover') || document.activeElement === trigger) {
+            updateFinanceNotePopoverPosition(trigger);
+          }
+        });
+      }, true);
     }
 
     function openStatusModal() {
@@ -4750,15 +5208,14 @@
     });
 
     function updateServiceTopupSummary() {
-      const input = drawerBody.querySelector('[data-service-shop-input]');
+      const input = drawerBody.querySelector('[data-service-amount-input]');
       if (!input) return;
-      const shops = Math.max(0, parseInt(input.value, 10) || 0);
-      const topupAmount = shops * 0.04;
+      const topupAmount = Math.max(0, parseInt(input.value, 10) || 0);
       const originalTransactionFee = topupAmount * 0.0025;
       const isTransactionFeeWaived = topupAmount > 1000;
       const transactionFee = isTransactionFeeWaived ? 0 : originalTransactionFee;
       const totalAmount = topupAmount + transactionFee;
-      const estimatedDays = shops > 0 ? shops / 2846 : 0;
+      const estimatedDays = topupAmount > 0 ? topupAmount / (2846 * 0.04) : 0;
 
       drawerBody.querySelector('[data-service-topup-amount]').textContent = formatRmb(topupAmount);
       const serviceFeeEl = drawerBody.querySelector('[data-service-fee]');
@@ -4767,17 +5224,17 @@
       drawerBody.querySelector('[data-service-total]').textContent = formatRmb(totalAmount);
       drawerBody.querySelector('[data-service-runway]').innerHTML = `Based on your authorized shop quantity in the last 14 days and current discount benefits, this top-up is estimated to last <span class="text-highlight">${estimatedDays.toFixed(1)} days</span>.`;
 
-      drawerBody.querySelectorAll('[data-service-shops]').forEach(option => {
-        option.classList.toggle('active', Number(option.dataset.serviceShops) === shops);
+      drawerBody.querySelectorAll('[data-service-amount]').forEach(option => {
+        option.classList.toggle('active', Number(option.dataset.serviceAmount) === topupAmount);
       });
     }
 
     function attachServiceTopupInteractions() {
-      const input = drawerBody.querySelector('[data-service-shop-input]');
+      const input = drawerBody.querySelector('[data-service-amount-input]');
       if (!input) return;
-      drawerBody.querySelectorAll('[data-service-shops]').forEach(option => {
+      drawerBody.querySelectorAll('[data-service-amount]').forEach(option => {
         option.addEventListener('click', () => {
-          input.value = option.dataset.serviceShops;
+          input.value = option.dataset.serviceAmount;
           updateServiceTopupSummary();
         });
       });
@@ -4988,12 +5445,25 @@
       }
     });
 
+    function syncIdentityProfileFields() {
+      const nameInput = document.querySelector('[data-identity-name-input]');
+      const numberInput = document.querySelector('[data-identity-number-input]');
+      const nameDisplay = document.querySelector('[data-account-identity-name]');
+      const numberDisplay = document.querySelector('[data-account-identity-number]');
+
+      if (nameInput && nameDisplay) nameDisplay.textContent = nameInput.value.trim() || '-';
+      if (numberInput && numberDisplay) numberDisplay.textContent = numberInput.value.trim() || '-';
+    }
+
     document.querySelectorAll('[data-count-input]').forEach(input => {
       const counter = input.closest('.text-input').querySelector('.counter');
+      counter.textContent = `${input.value.length}/60`;
       input.addEventListener('input', () => {
         counter.textContent = `${input.value.length}/60`;
+        if (input.matches('[data-identity-name-input], [data-identity-number-input]')) syncIdentityProfileFields();
       });
     });
+    syncIdentityProfileFields();
 
     function createUploadItem(file) {
       const item = document.createElement('div');
@@ -5180,6 +5650,8 @@
       updateBreadcrumb();
       updateInvoiceFooterMode();
     });
+
+    initFinanceNotePopovers();
   </script>
 </body>
 </html>
