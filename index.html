@@ -775,6 +775,156 @@
       text-align: center;
     }
 
+    .account-delete-modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 82;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .account-delete-modal-mask.open {
+      display: flex;
+    }
+
+    .account-delete-modal-card {
+      position: relative;
+      width: 560px;
+      max-width: calc(100vw - 64px);
+      padding: 24px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .account-delete-modal-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .account-delete-modal-title {
+      margin: 0;
+      color: #333;
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    .account-delete-modal-desc {
+      margin: 0;
+      color: #333;
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .account-delete-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .account-delete-step {
+      padding: 16px;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+
+    .account-delete-step-title {
+      margin: 0 0 8px;
+      color: #333;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    .account-delete-step-desc {
+      margin: 0;
+      color: #999;
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .account-delete-step-highlight {
+      color: #ee4d2d;
+    }
+
+    .account-delete-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .withdraw-page {
+      display: grid;
+      gap: 16px;
+    }
+
+    .withdraw-card {
+      padding: 24px;
+    }
+
+    .withdraw-section + .withdraw-section {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .withdraw-section-title {
+      margin: 0 0 16px;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    .withdraw-form-grid {
+      grid-template-columns: minmax(0, 420px) minmax(0, 420px);
+      max-width: 880px;
+    }
+
+    .withdraw-form-grid .input,
+    .withdraw-form-grid .select {
+      width: 100%;
+    }
+
+    .withdraw-summary {
+      max-width: 760px;
+    }
+
+    .withdraw-summary-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text);
+      line-height: 22px;
+    }
+
+    .withdraw-summary-list ol,
+    .withdraw-summary-list ul {
+      margin: 4px 0;
+      padding-left: 20px;
+    }
+
+    .withdraw-summary-list li + li {
+      margin-top: 2px;
+    }
+
+    .withdraw-summary-highlight {
+      color: #ee4d2d;
+      font-weight: 500;
+    }
+
+    .withdraw-action-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      max-width: 880px;
+    }
+
     .service-fee-alert {
       min-height: 40px;
       display: flex;
@@ -1681,6 +1831,10 @@
       gap: 16px;
     }
 
+    .service-topup-form {
+      gap: 8px;
+    }
+
     .modal-summary .summary-row.total strong {
       color: #ee4d2d;
     }
@@ -1763,11 +1917,17 @@
 
     .service-topup-helper {
       margin: 8px 0 0;
-      padding-top: 8px;
-      border-top: 1px solid #e5e5e5;
-      color: #333;
-      font-size: 14px;
-      line-height: 20px;
+      padding-top: 0;
+      border-top: 0;
+      color: #999999;
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .service-topup-helper .summary-label-with-popover {
+      display: inline-flex;
+      margin-left: 4px;
+      vertical-align: text-bottom;
     }
 
     .summary-box {
@@ -1791,6 +1951,23 @@
       color: #999;
       font-size: 12px;
       font-weight: 400;
+    }
+
+    .summary-label-with-popover {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .service-topup-fee-popover {
+      padding: 16px;
+      color: #333;
+    }
+
+    .service-topup-fee-popover p {
+      margin: 0;
     }
 
     .service-fee-waived {
@@ -2434,7 +2611,8 @@
 
     .deposit-amount-notes {
       margin: 8px 0 0;
-      padding-left: 18px;
+      padding-left: 0;
+      list-style: none;
       color: #999;
       font-size: 12px;
       line-height: 18px;
@@ -3415,6 +3593,30 @@
       </div>
     </div>
 
+    <div class="account-delete-modal-mask" id="account-delete-modal-mask" aria-hidden="true">
+      <div class="account-delete-modal-card" role="dialog" aria-modal="true" aria-labelledby="account-delete-modal-title" aria-describedby="account-delete-modal-desc">
+        <button type="button" class="status-modal-close" aria-label="Close modal" data-close-account-delete-modal></button>
+        <div class="account-delete-modal-content">
+          <h2 class="account-delete-modal-title" id="account-delete-modal-title">Delete Developer Account</h2>
+          <p class="account-delete-modal-desc" id="account-delete-modal-desc">To delete your account, please complete the following requirements:</p>
+          <div class="account-delete-steps">
+            <section class="account-delete-step" data-account-delete-apps-step aria-labelledby="account-delete-step-apps">
+              <h3 class="account-delete-step-title" id="account-delete-step-apps">Delete All Apps</h3>
+              <p class="account-delete-step-desc">You currently have <span class="account-delete-step-highlight">3</span> active apps under this developer account. Please delete all apps before proceeding with account deletion.</p>
+            </section>
+            <section class="account-delete-step" aria-labelledby="account-delete-step-balance">
+              <h3 class="account-delete-step-title" id="account-delete-step-balance">Withdraw Balance</h3>
+              <p class="account-delete-step-desc" data-account-delete-balance-desc>Current Service Fee Balance: <span class="account-delete-step-highlight">¥1,250.00</span> + Current Deposit: <span class="account-delete-step-highlight">¥1,250.00</span> ( Available after all apps have been deleted)</p>
+            </section>
+          </div>
+        </div>
+        <div class="account-delete-modal-footer">
+          <button type="button" class="btn secondary" data-close-account-delete-modal>Cancel</button>
+          <button type="button" class="btn primary" data-account-delete-manage-apps>Manage APPs</button>
+        </div>
+      </div>
+    </div>
+
     <div class="layout">
       <aside class="sidebar">
         <div class="nav-section" data-mode="console">
@@ -3433,7 +3635,7 @@
             </svg>
             Finance
           </div>
-          <button class="nav-button active" data-page="service-fee">Service Fee Management</button>
+          <button class="nav-button active" data-page="service-fee">Finance Management</button>
           <button class="nav-button" data-page="invoice">Invoice Management</button>
         </div>
         <div class="nav-section" data-mode="console">
@@ -3450,12 +3652,12 @@
       <main class="main">
         <div class="breadcrumb-bar">
           <div class="breadcrumb" id="breadcrumb">
-            <strong>Service Fee Management</strong>
+            <strong>Finance Management</strong>
           </div>
         </div>
 
         <div class="content">
-          <section class="page active" id="page-service-fee" data-title="Service Fee Management" data-parent="Finance" data-branch="onboarding">
+          <section class="page active" id="page-service-fee" data-title="Finance Management" data-parent="Finance" data-branch="onboarding">
             <div class="fee-onboarding">
               <div class="onboarding-panel">
                 <h1 class="onboarding-title">为了保障账户安全与交易合规，请先完成以下流程</h1>
@@ -4505,7 +4707,7 @@
             <div class="surface account-profile-panel">
               <div class="account-profile-header">
                 <h1 class="account-profile-title">Developer Profile</h1>
-                <button class="btn secondary">Delete Developer Account</button>
+                <button class="btn secondary" data-open-account-delete-modal>Delete Developer Account</button>
               </div>
               <section class="account-profile-section" aria-labelledby="basic-information-title">
                 <div class="account-section-head">
@@ -4559,6 +4761,78 @@
               </section>
             </div>
           </section>
+
+          <section class="page" id="page-account-withdraw" data-title="Account Information" data-parent="Personal Center" data-secondary-title="Withdraw Balance">
+            <div class="withdraw-page">
+              <div class="surface withdraw-card">
+                <section class="withdraw-section" aria-labelledby="withdraw-bank-title">
+                  <h2 class="withdraw-section-title" id="withdraw-bank-title">Bank Account Information</h2>
+                  <div class="form-grid withdraw-form-grid">
+                    <div class="form-item">
+                      <label for="withdraw-bank-account-number">Bank Account Number <span class="required">*</span></label>
+                      <input class="input" id="withdraw-bank-account-number" inputmode="numeric" placeholder="Enter bank account number">
+                    </div>
+                    <div class="form-item">
+                      <label for="withdraw-bank-account-name">Bank Account Name <span class="required">*</span></label>
+                      <input class="input" id="withdraw-bank-account-name" placeholder="Enter bank account name">
+                    </div>
+                    <div class="form-item">
+                      <label for="withdraw-bank-branch-name">Bank Branch Name <span class="required">*</span></label>
+                      <select class="select" id="withdraw-bank-branch-name">
+                        <option selected disabled>Select bank branch</option>
+                        <option>Bank of China Shenzhen Branch</option>
+                        <option>ICBC Shenzhen Branch</option>
+                        <option>China Merchants Bank Shenzhen Branch</option>
+                      </select>
+                      <span class="helper">Bank search is supported.</span>
+                    </div>
+                    <div class="form-item">
+                      <label for="withdraw-recipient-name">Recipient Name <span class="required">*</span></label>
+                      <input class="input" id="withdraw-recipient-name" placeholder="Enter recipient name">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="withdraw-section" aria-labelledby="withdraw-amount-title">
+                  <h2 class="withdraw-section-title" id="withdraw-amount-title">Withdrawal Amount Summary</h2>
+                  <div class="summary-box withdraw-summary">
+                    <ol class="withdraw-summary-list">
+                      <li>Current balance: <span class="withdraw-summary-highlight">RMB 120.00</span></li>
+                      <li>
+                        Transaction fee: <span class="withdraw-summary-highlight">RMB 5.00</span> (estimated)
+                        <ul>
+                          <li>Hover over the transaction fee to view the fee rules.</li>
+                        </ul>
+                        <ol type="a">
+                          <li>
+                            Cross-bank transfers within the same city, cross-bank transfers to other cities, and internal transfers to other cities are charged by amount:
+                            <ol type="i">
+                              <li>RMB 10,000 or below: RMB 5 per transaction</li>
+                              <li>RMB 10,000 to RMB 100,000: RMB 10 per transaction</li>
+                              <li>RMB 100,000 to RMB 500,000: RMB 15 per transaction</li>
+                              <li>RMB 500,000 to RMB 1,000,000: RMB 20 per transaction</li>
+                              <li>Above RMB 1,000,000: 0.002% of the amount, capped at RMB 200 per transaction</li>
+                            </ol>
+                          </li>
+                          <li>Internal transfers within the same bank are free of charge.</li>
+                        </ol>
+                      </li>
+                      <li>
+                        Expected Withdrawal Amount: <span class="withdraw-summary-highlight">RMB 115.00</span>
+                        <ul>
+                          <li>Expected Withdrawal Amount = Current balance - Transaction fee</li>
+                        </ul>
+                      </li>
+                    </ol>
+                  </div>
+                </section>
+              </div>
+              <div class="withdraw-action-bar">
+                <button type="button" class="btn secondary" data-withdraw-back>Cancel</button>
+                <button type="button" class="btn primary">Submit</button>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
     </div>
@@ -4588,7 +4862,7 @@
   </div>
 
   <template id="drawer-service-template">
-    <div class="modal-form-block">
+    <div class="modal-form-block service-topup-form">
       <div class="deposit-step-section">
         <div class="deposit-step-label">Top-up Amount</div>
         <div class="amount-options service-amount-options">
@@ -4601,19 +4875,34 @@
           <span class="deposit-prefix-divider" aria-hidden="true"></span>
           <input class="deposit-amount-input" value="500" inputmode="numeric" aria-label="Top-up amount" data-service-amount-input>
         </div>
-        <ul class="service-topup-intro service-topup-fee-note">
-          <li>The bank is expected to charge a 0.25% transaction fee for each payment. If the top-up amount is more than RMB 1,000, Shopee will cover the transaction fee.</li>
-        </ul>
-        <p class="service-topup-helper" data-service-runway>Based on your authorized shop quantity in the last 14 days and current discount benefits, this top-up is estimated to last <span class="text-highlight">4.4 days</span>.</p>
+        <div class="service-topup-helper" data-service-runway>
+          <span data-service-runway-text>Based on your authorized shop quantity in the last 14 days and current discount benefits, this top-up is estimated to last <span class="text-highlight">4.4 days</span>.</span>
+          <span class="summary-label-with-popover finance-note-with-popover" tabindex="0" aria-describedby="service-topup-billing-popover">
+            <svg class="finance-note-info-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1ZM8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2ZM7.98751 10.2375C8.40172 10.2375 8.73751 10.5733 8.73751 10.9875C8.73751 11.4017 8.40172 11.7375 7.98751 11.7375C7.57329 11.7375 7.23751 11.4017 7.23751 10.9875C7.23751 10.5733 7.57329 10.2375 7.98751 10.2375ZM8.117 4.60513C9.97012 4.60513 10.7746 6.50497 9.94298 7.72186C9.76926 7.97607 9.56587 8.14547 9.2705 8.31455L9.11487 8.39945L8.95825 8.47994C8.56296 8.68261 8.49391 8.75809 8.49391 9.02099C8.49391 9.29713 8.27005 9.52099 7.99391 9.52099C7.71777 9.52099 7.49391 9.29713 7.49391 9.02099C7.49391 8.34167 7.76504 7.99682 8.35914 7.66626L8.76655 7.45066C8.94241 7.35025 9.04308 7.26634 9.11736 7.15765C9.52116 6.56675 9.11397 5.60513 8.117 5.60513C7.41792 5.60513 6.82815 6.01273 6.75716 6.55276L6.75 6.66245L6.74194 6.75233C6.69961 6.98557 6.49546 7.16245 6.25 7.16245C5.97386 7.16245 5.75 6.93859 5.75 6.66245C5.75 5.44257 6.87194 4.60513 8.117 4.60513Z" fill="currentColor"/>
+            </svg>
+            <div class="finance-note-popover service-topup-fee-popover" id="service-topup-billing-popover" role="tooltip">
+              <p>Billing rule: daily deductions are settled based on the actual number of authorized shops. Each shop costs RMB 0.04 per day.</p>
+            </div>
+          </span>
+        </div>
       </div>
       <div class="summary-box modal-summary">
         <div class="summary-row"><span>Top-up Amount</span><strong data-service-topup-amount>¥500.00</strong></div>
-        <div class="summary-row"><span>Transaction Fee</span><strong data-service-fee>¥1.25</strong></div>
+        <div class="summary-row">
+          <span class="summary-label-with-popover finance-note-with-popover" tabindex="0" aria-describedby="service-topup-fee-popover">
+            <span>Transaction Fee</span>
+            <svg class="finance-note-info-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1ZM8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2ZM7.98751 10.2375C8.40172 10.2375 8.73751 10.5733 8.73751 10.9875C8.73751 11.4017 8.40172 11.7375 7.98751 11.7375C7.57329 11.7375 7.23751 11.4017 7.23751 10.9875C7.23751 10.5733 7.57329 10.2375 7.98751 10.2375ZM8.117 4.60513C9.97012 4.60513 10.7746 6.50497 9.94298 7.72186C9.76926 7.97607 9.56587 8.14547 9.2705 8.31455L9.11487 8.39945L8.95825 8.47994C8.56296 8.68261 8.49391 8.75809 8.49391 9.02099C8.49391 9.29713 8.27005 9.52099 7.99391 9.52099C7.71777 9.52099 7.49391 9.29713 7.49391 9.02099C7.49391 8.34167 7.76504 7.99682 8.35914 7.66626L8.76655 7.45066C8.94241 7.35025 9.04308 7.26634 9.11736 7.15765C9.52116 6.56675 9.11397 5.60513 8.117 5.60513C7.41792 5.60513 6.82815 6.01273 6.75716 6.55276L6.75 6.66245L6.74194 6.75233C6.69961 6.98557 6.49546 7.16245 6.25 7.16245C5.97386 7.16245 5.75 6.93859 5.75 6.66245C5.75 5.44257 6.87194 4.60513 8.117 4.60513Z" fill="currentColor"/>
+            </svg>
+            <div class="finance-note-popover service-topup-fee-popover" id="service-topup-fee-popover" role="tooltip">
+              <p>The bank is expected to charge a 0.25% transaction fee for each payment. If the top-up amount is more than RMB 1,000, Shopee will cover the transaction fee.</p>
+            </div>
+          </span>
+          <strong data-service-fee>¥1.25</strong>
+        </div>
         <div class="summary-row total"><span>Total Amount</span><strong data-service-total>¥501.25</strong></div>
       </div>
-      <ul class="service-topup-intro service-topup-billing">
-        <li>Billing rule: daily deductions are settled based on the actual number of authorized shops. Each shop costs RMB 0.04 per day.</li>
-      </ul>
     </div>
   </template>
 
@@ -4628,12 +4917,22 @@
         </div>
         <ul class="deposit-amount-notes">
           <li>The deposit amount must be no less than RMB 30,000.</li>
-          <li>The bank is expected to charge a <span class="text-highlight">0.25%</span> transaction fee for each payment. If the top-up amount is more than RMB 1,000, Shopee will cover the transaction fee.</li>
         </ul>
       </div>
       <div class="summary-box modal-summary">
         <div class="summary-row"><span>Subtotal</span><strong>¥30,000.00</strong></div>
-        <div class="summary-row"><span>Transaction Fee</span><strong>¥0.00</strong></div>
+        <div class="summary-row">
+          <span class="summary-label-with-popover finance-note-with-popover" tabindex="0" aria-describedby="deposit-fee-popover">
+            <span>Transaction Fee</span>
+            <svg class="finance-note-info-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1ZM8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2ZM7.98751 10.2375C8.40172 10.2375 8.73751 10.5733 8.73751 10.9875C8.73751 11.4017 8.40172 11.7375 7.98751 11.7375C7.57329 11.7375 7.23751 11.4017 7.23751 10.9875C7.23751 10.5733 7.57329 10.2375 7.98751 10.2375ZM8.117 4.60513C9.97012 4.60513 10.7746 6.50497 9.94298 7.72186C9.76926 7.97607 9.56587 8.14547 9.2705 8.31455L9.11487 8.39945L8.95825 8.47994C8.56296 8.68261 8.49391 8.75809 8.49391 9.02099C8.49391 9.29713 8.27005 9.52099 7.99391 9.52099C7.71777 9.52099 7.49391 9.29713 7.49391 9.02099C7.49391 8.34167 7.76504 7.99682 8.35914 7.66626L8.76655 7.45066C8.94241 7.35025 9.04308 7.26634 9.11736 7.15765C9.52116 6.56675 9.11397 5.60513 8.117 5.60513C7.41792 5.60513 6.82815 6.01273 6.75716 6.55276L6.75 6.66245L6.74194 6.75233C6.69961 6.98557 6.49546 7.16245 6.25 7.16245C5.97386 7.16245 5.75 6.93859 5.75 6.66245C5.75 5.44257 6.87194 4.60513 8.117 4.60513Z" fill="currentColor"/>
+            </svg>
+            <div class="finance-note-popover service-topup-fee-popover" id="deposit-fee-popover" role="tooltip">
+              <p>The bank is expected to charge a 0.25% transaction fee for each payment. If the top-up amount is more than RMB 1,000, Shopee will cover the transaction fee.</p>
+            </div>
+          </span>
+          <strong>¥0.00</strong>
+        </div>
         <div class="summary-row total"><span>Total Amount</span><strong>¥30,000.00</strong></div>
       </div>
     </div>
@@ -4688,6 +4987,10 @@
     const statusFloatButton = document.querySelector('.status-float-button');
     const statusOptionsMenu = document.getElementById('status-options-menu');
     const statusModalMask = document.getElementById('status-modal-mask');
+    const accountDeleteModalMask = document.getElementById('account-delete-modal-mask');
+    const accountDeleteAppsStep = document.querySelector('[data-account-delete-apps-step]');
+    const accountDeleteBalanceDesc = document.querySelector('[data-account-delete-balance-desc]');
+    const accountDeletePrimaryAction = document.querySelector('[data-account-delete-manage-apps]');
     const invoiceFlow = document.getElementById('invoice-flow');
     const invoiceDetail = document.getElementById('invoice-detail');
     const invoicePage = document.getElementById('page-invoice');
@@ -4700,8 +5003,11 @@
     let drawerType = null;
     let toastTimer = null;
     let toastHideTimer = null;
+    let accountDeleteAppsManaged = false;
     const defaultDepositNote = 'The deposit amount must be no less than RMB 30,000.';
     const depositInsufficientNote = 'The deposit balance is less than RMB 30,000';
+    const accountDeleteBalanceDescPending = 'Current Service Fee Balance: <span class="account-delete-step-highlight">¥1,250.00</span> + Current Deposit: <span class="account-delete-step-highlight">¥1,250.00</span> ( Available after all apps have been deleted)';
+    const accountDeleteBalanceDescReady = 'Current Service Fee Balance: <span class="account-delete-step-highlight">¥1,250.00</span> + Current Deposit: <span class="account-delete-step-highlight">¥1,250.00</span>';
 
     function formatRmb(value) {
       return `¥${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -4728,10 +5034,11 @@
       const popover = trigger.querySelector('.finance-note-popover');
       if (!popover) return;
       const triggerRect = trigger.getBoundingClientRect();
+      const iconRect = trigger.querySelector('.finance-note-info-icon')?.getBoundingClientRect();
       const popoverRect = popover.getBoundingClientRect();
       const gap = 12;
       const viewportPadding = 16;
-      const triggerCenter = triggerRect.left + triggerRect.width / 2;
+      const triggerCenter = iconRect ? iconRect.left + iconRect.width / 2 : triggerRect.left + triggerRect.width / 2;
       const halfPopoverWidth = popoverRect.width / 2;
       const minLeft = viewportPadding + halfPopoverWidth;
       const maxLeft = window.innerWidth - viewportPadding - halfPopoverWidth;
@@ -4747,26 +5054,27 @@
       trigger.style.setProperty('--finance-note-popover-arrow-left', `${arrowLeft}px`);
     }
 
-    function initFinanceNotePopovers() {
-      const triggers = Array.from(document.querySelectorAll('.finance-note-with-popover'));
-      triggers.forEach(trigger => {
-        trigger.addEventListener('mouseenter', () => updateFinanceNotePopoverPosition(trigger));
-        trigger.addEventListener('focus', () => updateFinanceNotePopoverPosition(trigger));
+    function bindFinanceNotePopover(trigger) {
+      if (!trigger || trigger.dataset.popoverBound === 'true') return;
+      trigger.addEventListener('mouseenter', () => updateFinanceNotePopoverPosition(trigger));
+      trigger.addEventListener('focus', () => updateFinanceNotePopoverPosition(trigger));
+      trigger.dataset.popoverBound = 'true';
+    }
+
+    function refreshVisibleFinanceNotePopovers() {
+      document.querySelectorAll('.finance-note-with-popover').forEach(trigger => {
+        if (trigger.matches(':hover') || document.activeElement === trigger) {
+          updateFinanceNotePopoverPosition(trigger);
+        }
       });
-      window.addEventListener('resize', () => {
-        triggers.forEach(trigger => {
-          if (trigger.matches(':hover') || document.activeElement === trigger) {
-            updateFinanceNotePopoverPosition(trigger);
-          }
-        });
-      });
-      window.addEventListener('scroll', () => {
-        triggers.forEach(trigger => {
-          if (trigger.matches(':hover') || document.activeElement === trigger) {
-            updateFinanceNotePopoverPosition(trigger);
-          }
-        });
-      }, true);
+    }
+
+    function initFinanceNotePopovers(scope = document) {
+      scope.querySelectorAll('.finance-note-with-popover').forEach(bindFinanceNotePopover);
+      if (initFinanceNotePopovers.bound === true) return;
+      window.addEventListener('resize', refreshVisibleFinanceNotePopovers);
+      window.addEventListener('scroll', refreshVisibleFinanceNotePopovers, true);
+      initFinanceNotePopovers.bound = true;
     }
 
     function openStatusModal() {
@@ -4780,6 +5088,32 @@
       if (!statusModalMask) return;
       statusModalMask.classList.remove('open');
       statusModalMask.setAttribute('aria-hidden', 'true');
+    }
+
+    function openAccountDeleteModal() {
+      if (!accountDeleteModalMask) return;
+      accountDeleteModalMask.classList.add('open');
+      accountDeleteModalMask.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeAccountDeleteModal() {
+      if (!accountDeleteModalMask) return;
+      accountDeleteModalMask.classList.remove('open');
+      accountDeleteModalMask.setAttribute('aria-hidden', 'true');
+    }
+
+    function renderAccountDeleteModalState() {
+      if (accountDeleteAppsStep) {
+        accountDeleteAppsStep.hidden = accountDeleteAppsManaged;
+      }
+      if (accountDeleteBalanceDesc) {
+        accountDeleteBalanceDesc.innerHTML = accountDeleteAppsManaged
+          ? accountDeleteBalanceDescReady
+          : accountDeleteBalanceDescPending;
+      }
+      if (accountDeletePrimaryAction) {
+        accountDeletePrimaryAction.textContent = accountDeleteAppsManaged ? 'Withdraw Balance' : 'Manage APPs';
+      }
     }
 
     function closeStatusOptionsMenu() {
@@ -4857,6 +5191,7 @@
       let secondaryTitle = '';
       if (activePage.id === 'page-service-fee') secondaryTitle = getServiceFeeSecondaryTitle();
       if (activePage.id === 'page-invoice') secondaryTitle = getInvoiceSecondaryTitle();
+      if (activePage.dataset.secondaryTitle) secondaryTitle = activePage.dataset.secondaryTitle;
 
       breadcrumb.innerHTML = secondaryTitle
         ? `<button type="button" class="breadcrumb-parent" data-breadcrumb-parent>${activePage.dataset.title}</button><span>›</span><strong>${secondaryTitle}</strong>`
@@ -4876,6 +5211,9 @@
         if (invoiceDetail) invoiceDetail.hidden = true;
         updateBreadcrumb();
         updateInvoiceFooterMode();
+      }
+      if (activePage.id === 'page-account-withdraw') {
+        setPage('account-info');
       }
     }
 
@@ -5156,7 +5494,10 @@
       const page = document.getElementById(`page-${pageId}`);
       if (!page) return;
       pages.forEach(item => item.classList.toggle('active', item === page));
-      navButtons.forEach(button => button.classList.toggle('active', button.dataset.page === pageId));
+      navButtons.forEach(button => {
+        const isAccountSubpage = pageId === 'account-withdraw' && button.dataset.page === 'account-info';
+        button.classList.toggle('active', button.dataset.page === pageId || isAccountSubpage);
+      });
       if (pageId === 'service-fee') {
         setServiceFeeBranch(serviceFeeBranch);
       } else {
@@ -5220,7 +5561,7 @@
       serviceFeeEl.textContent = formatRmb(isTransactionFeeWaived ? originalTransactionFee : transactionFee);
       serviceFeeEl.classList.toggle('service-fee-waived', isTransactionFeeWaived && originalTransactionFee > 0);
       drawerBody.querySelector('[data-service-total]').textContent = formatRmb(totalAmount);
-      drawerBody.querySelector('[data-service-runway]').innerHTML = `Based on your authorized shop quantity in the last 14 days and current discount benefits, this top-up is estimated to last <span class="text-highlight">${estimatedDays.toFixed(1)} days</span>.`;
+      drawerBody.querySelector('[data-service-runway-text]').innerHTML = `Based on your authorized shop quantity in the last 14 days and current discount benefits, this top-up is estimated to last <span class="text-highlight">${estimatedDays.toFixed(1)} days</span>.`;
 
       drawerBody.querySelectorAll('[data-service-amount]').forEach(option => {
         option.classList.toggle('active', Number(option.dataset.serviceAmount) === topupAmount);
@@ -5256,6 +5597,7 @@
       const templateId = type === 'deposit' ? 'drawer-deposit-template' : type === 'password' ? 'drawer-password-template' : 'drawer-service-template';
       const template = document.getElementById(templateId);
       drawerBody.replaceChildren(template.content.cloneNode(true));
+      initFinanceNotePopovers(drawerBody);
       if (type === 'service') attachServiceTopupInteractions();
       if (type === 'password') attachPaymentPasswordInteractions();
       drawerCheckout.textContent = type === 'password' ? 'Save' : 'Check Out';
@@ -5287,6 +5629,31 @@
       button.addEventListener('click', closeStatusModal);
     });
 
+    document.querySelector('[data-open-account-delete-modal]')?.addEventListener('click', () => {
+      renderAccountDeleteModalState();
+      openAccountDeleteModal();
+    });
+
+    document.querySelectorAll('[data-close-account-delete-modal]').forEach(button => {
+      button.addEventListener('click', closeAccountDeleteModal);
+    });
+
+    document.querySelector('[data-account-delete-manage-apps]')?.addEventListener('click', () => {
+      if (accountDeleteAppsManaged) {
+        closeAccountDeleteModal();
+        setPage('account-withdraw');
+        window.scrollTo({ top: 0, left: 0 });
+        return;
+      }
+      accountDeleteAppsManaged = true;
+      renderAccountDeleteModalState();
+    });
+
+    document.querySelector('[data-withdraw-back]')?.addEventListener('click', () => {
+      setPage('account-info');
+      window.scrollTo({ top: 0, left: 0 });
+    });
+
     document.querySelector('[data-status-modal-topup]')?.addEventListener('click', () => {
       closeStatusModal();
       setPage('service-fee');
@@ -5296,6 +5663,10 @@
 
     statusModalMask?.addEventListener('click', event => {
       if (event.target === statusModalMask) closeStatusModal();
+    });
+
+    accountDeleteModalMask?.addEventListener('click', event => {
+      if (event.target === accountDeleteModalMask) closeAccountDeleteModal();
     });
 
     document.querySelectorAll('[data-close-drawer]').forEach(button => {
