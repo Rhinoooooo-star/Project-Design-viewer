@@ -476,6 +476,16 @@
       max-width: none;
     }
 
+    .layout.withdraw-flow .sidebar,
+    .layout.withdraw-flow .breadcrumb-bar {
+      display: none;
+    }
+
+    .layout.withdraw-flow .content {
+      height: calc(100vh - var(--header-h));
+      padding: 32px 0 88px;
+    }
+
     .page {
       display: none;
       width: 100%;
@@ -859,19 +869,148 @@
       margin-top: 24px;
     }
 
-    .withdraw-page {
+    .withdraw-password-modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 82;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .withdraw-password-modal-mask.open {
+      display: flex;
+    }
+
+    .withdraw-password-modal-card {
+      width: 420px;
+      max-width: calc(100vw - 64px);
+      padding: 24px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .withdraw-password-modal-title {
+      margin: 0 0 20px;
+      color: var(--text);
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    .withdraw-password-modal-body {
       display: grid;
       gap: 16px;
+    }
+
+    .withdraw-password-modal-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .withdraw-password-forgot {
+      color: var(--blue);
+      font-size: 14px;
+      line-height: 20px;
+      text-decoration: none;
+    }
+
+    .withdraw-password-forgot:hover,
+    .withdraw-password-forgot:focus-visible {
+      text-decoration: underline;
+      outline: none;
+    }
+
+    .withdraw-password-modal-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .withdraw-double-check-modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 83;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      background: rgba(0, 0, 0, 0.44);
+    }
+
+    .withdraw-double-check-modal-mask.open {
+      display: flex;
+    }
+
+    .withdraw-double-check-modal-card {
+      width: 520px;
+      max-width: calc(100vw - 64px);
+      padding: 32px 32px 24px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+      text-align: center;
+    }
+
+    .withdraw-double-check-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+
+    .withdraw-double-check-title {
+      margin: 0 0 12px;
+      color: var(--text);
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 500;
+    }
+
+    .withdraw-double-check-desc {
+      margin: 0 auto;
+      max-width: 420px;
+      color: var(--text-2);
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .withdraw-double-check-actions {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .withdraw-page {
+      display: grid;
+      gap: 24px;
+      width: 1104px;
+      max-width: calc(100vw - 64px);
+      margin: 0 auto;
     }
 
     .withdraw-card {
       padding: 24px;
     }
 
+    .withdraw-page-title {
+      margin: 0 0 24px;
+      color: var(--text);
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 500;
+    }
+
     .withdraw-section + .withdraw-section {
       margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid var(--line);
+      padding-top: 0;
+      border-top: 0;
     }
 
     .withdraw-section-title {
@@ -884,7 +1023,7 @@
 
     .withdraw-form-grid {
       grid-template-columns: minmax(0, 420px) minmax(0, 420px);
-      max-width: 880px;
+      max-width: 860px;
     }
 
     .withdraw-form-grid .input,
@@ -892,37 +1031,266 @@
       width: 100%;
     }
 
-    .withdraw-summary {
-      max-width: 760px;
+    .withdraw-summary-stack {
+      display: grid;
+      gap: 16px;
+      width: 600px;
+      max-width: 100%;
     }
 
-    .withdraw-summary-list {
-      margin: 0;
-      padding-left: 20px;
-      color: var(--text);
+    .withdraw-summary-card {
+      gap: 10px;
+    }
+
+    .withdraw-card.is-processing .withdraw-summary-stack {
+      width: 645px;
+    }
+
+    .withdraw-summary-card.is-processing {
+      min-height: 92px;
+      padding: 24px;
+      align-items: stretch;
+    }
+
+    .withdraw-card.is-processing .withdraw-bank-section {
+      display: none;
+    }
+
+    .withdraw-card.is-processing .withdraw-page-title {
+      display: none;
+    }
+
+    .withdraw-processing-alert {
+      width: min(100%, 1000px);
+      margin-bottom: 24px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--text-2);
+      font-size: 14px;
       line-height: 22px;
+      text-align: center;
     }
 
-    .withdraw-summary-list ol,
-    .withdraw-summary-list ul {
-      margin: 4px 0;
-      padding-left: 20px;
+    .withdraw-processing-alert[hidden] {
+      display: none;
     }
 
-    .withdraw-summary-list li + li {
-      margin-top: 2px;
+    .withdraw-processing-panel {
+      display: none;
+      width: 100%;
+      text-align: left;
     }
 
-    .withdraw-summary-highlight {
-      color: #ee4d2d;
+    .withdraw-summary-card.is-processing .withdraw-summary-default {
+      display: none;
+    }
+
+    .withdraw-summary-default {
+      display: grid;
+      gap: 10px;
+    }
+
+    .withdraw-summary-card.is-processing .withdraw-processing-panel {
+      display: grid;
+      grid-template-columns: 60px minmax(0, 1fr) auto;
+      grid-template-rows: auto auto;
+      column-gap: 16px;
+      row-gap: 8px;
+      align-items: center;
+    }
+
+    .withdraw-summary-card.is-success .withdraw-processing-panel {
+      grid-template-columns: 40px minmax(0, 1fr) auto;
+    }
+
+    .withdraw-summary-card[data-withdraw-summary-card="deposit"] .withdraw-processing-panel {
+      grid-template-columns: 40px minmax(0, 1fr) auto;
+    }
+
+    .withdraw-processing-head {
+      display: contents;
+    }
+
+    .withdraw-processing-title-wrap {
+      display: contents;
+    }
+
+    .withdraw-processing-title {
+      grid-column: 2;
+      grid-row: 1;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 20px;
       font-weight: 500;
+    }
+
+    .withdraw-processing-icon {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      width: 60px;
+      height: 60px;
+      align-self: center;
+    }
+
+    .withdraw-processing-badge {
+      grid-column: 3;
+      grid-row: 1 / span 2;
+      align-self: center;
+    }
+
+    .withdraw-summary-card.is-success .withdraw-processing-badge {
+      background: #ebf9ef;
+      color: #55cc77;
+    }
+
+    .withdraw-summary-card.is-success .withdraw-processing-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .withdraw-summary-card[data-withdraw-summary-card="deposit"] .withdraw-processing-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .withdraw-processing-desc {
+      grid-column: 2;
+      grid-row: 2;
+      margin: 0;
+      color: var(--text-2);
+      font-size: 14px;
+      line-height: 16px;
+      text-align: left;
+    }
+
+    .withdraw-card.is-processing .withdraw-section:not(.withdraw-bank-section) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 48px 0;
+    }
+
+    .withdraw-card.is-processing .withdraw-section-title {
+      width: 600px;
+      max-width: 100%;
+      margin-bottom: 12px;
+      text-align: center;
+      font-size: 22px;
+      line-height: 30px;
+    }
+
+    .withdraw-summary-card .summary-row {
+      align-items: center;
+    }
+
+    .withdraw-summary-card .summary-row.total {
+      color: var(--text);
+    }
+
+    .withdraw-summary-card .summary-row.total strong {
+      color: #ee4d2d;
+    }
+
+    .withdraw-waive-balance {
+      display: grid;
+      gap: 10px;
+      width: 600px;
+      max-width: 100%;
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafafa;
+      color: var(--text-2);
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .withdraw-waive-balance-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .withdraw-waive-balance-head strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .withdraw-waive-balance-head span {
+      color: var(--text);
+    }
+
+    .withdraw-waive-balance-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .withdraw-waive-balance-copy {
+      flex: 1 1 auto;
+    }
+
+    .withdraw-waive-balance .btn {
+      flex: 0 0 auto;
+    }
+
+    .withdraw-waive-balance-confirmed {
+      display: none;
+      flex: 0 0 auto;
+      color: #666666;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .withdraw-waive-balance.is-confirmed .withdraw-waive-balance-confirmed {
+      display: inline;
+    }
+
+    .withdraw-waive-balance.is-confirmed [data-withdraw-waive-confirm] {
+      display: none;
+    }
+
+    .withdraw-card.is-processing .withdraw-waive-balance {
+      display: none;
     }
 
     .withdraw-action-bar {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .withdraw-total-amount {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 24px;
+      font-weight: 400;
+    }
+
+    .withdraw-total-amount strong {
+      color: #ee4d2d;
+      font-size: 18px;
+      line-height: 28px;
+      font-weight: 500;
+      margin-left: 4px;
+    }
+
+    .withdraw-action-buttons {
+      display: flex;
       justify-content: flex-end;
       gap: 8px;
-      max-width: 880px;
+    }
+
+    .withdraw-action-bar[hidden] {
+      display: none;
     }
 
     .service-fee-alert {
@@ -2436,6 +2804,7 @@
     }
 
     .onboarding-title {
+      width: min(100%, 800px);
       margin: 0;
       color: var(--text);
       font-size: 20px;
@@ -3577,8 +3946,8 @@
 
     <button type="button" class="status-float-button" aria-haspopup="menu" aria-expanded="false">👉View other status</button>
     <div class="status-options-menu" id="status-options-menu" role="menu" aria-hidden="true">
-      <button type="button" class="status-option-item" role="menuitem" data-status-option="exhausted">余额耗尽全局弹窗</button>
-      <button type="button" class="status-option-item" role="menuitem" data-status-option="deposit-insufficient">保证金不够</button>
+      <button type="button" class="status-option-item" role="menuitem" data-status-option="exhausted">Balance Exhausted Global Modal</button>
+      <button type="button" class="status-option-item" role="menuitem" data-status-option="deposit-insufficient">Deposit Insufficient</button>
     </div>
 
     <div class="status-modal-mask" id="status-modal-mask" aria-hidden="true">
@@ -3613,6 +3982,40 @@
         <div class="account-delete-modal-footer">
           <button type="button" class="btn secondary" data-close-account-delete-modal>Cancel</button>
           <button type="button" class="btn primary" data-account-delete-manage-apps>Manage APPs</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="withdraw-password-modal-mask" id="withdraw-password-modal-mask" aria-hidden="true">
+      <div class="withdraw-password-modal-card" role="dialog" aria-modal="true" aria-labelledby="withdraw-password-modal-title">
+        <div class="withdraw-password-modal-body">
+          <h2 class="withdraw-password-modal-title" id="withdraw-password-modal-title">Enter payment password</h2>
+          <div class="form-item">
+            <input class="input" id="withdraw-payment-password" type="password" placeholder="Enter password">
+          </div>
+        </div>
+        <div class="withdraw-password-modal-actions">
+          <a href="#" class="withdraw-password-forgot">Forgot password?</a>
+          <div class="withdraw-password-modal-buttons">
+            <button type="button" class="btn secondary" data-close-withdraw-password-modal>Cancel</button>
+            <button type="button" class="btn primary" data-open-withdraw-double-check-modal>Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="withdraw-double-check-modal-mask" id="withdraw-double-check-modal-mask" aria-hidden="true">
+      <div class="withdraw-double-check-modal-card" role="dialog" aria-modal="true" aria-labelledby="withdraw-double-check-modal-title" aria-describedby="withdraw-double-check-modal-desc">
+        <svg class="withdraw-double-check-icon" width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M40 80C62.0914 80 80 62.0914 80 40C80 17.9086 62.0914 0 40 0C17.9086 0 0 17.9086 0 40C0 62.0914 17.9086 80 40 80Z" fill="#FF4742"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M40 17C41.6569 17 43 17 43 17V47C43 47 41.6569 47 40 47C38.3431 47 37 47 37 47V17C37 17 38.3431 17 40 17Z" fill="white"/>
+          <path d="M40 64C42.2091 64 44 62.2091 44 60C44 57.7909 42.2091 56 40 56C37.7909 56 36 57.7909 36 60C36 62.2091 37.7909 64 40 64Z" fill="white"/>
+        </svg>
+        <h2 class="withdraw-double-check-title" id="withdraw-double-check-modal-title">Withdraw balance and deactivate account</h2>
+        <p class="withdraw-double-check-desc" id="withdraw-double-check-modal-desc">After you submit the withdrawal, your account status will change to deactivation in progress. All functions, including API calls and shop authorizations, will be disabled, and all services published in Service Market will be taken offline. After the withdrawal succeeds, the account will be automatically deactivated. This action cannot be undone. Confirm withdrawal?</p>
+        <div class="withdraw-double-check-actions">
+          <button type="button" class="btn secondary" data-close-withdraw-double-check-modal>Cancel</button>
+          <button type="button" class="btn primary" data-confirm-withdraw-processing>Confirm</button>
         </div>
       </div>
     </div>
@@ -3660,7 +4063,7 @@
           <section class="page active" id="page-service-fee" data-title="Finance Management" data-parent="Finance" data-branch="onboarding">
             <div class="fee-onboarding">
               <div class="onboarding-panel">
-                <h1 class="onboarding-title">为了保障账户安全与交易合规，请先完成以下流程</h1>
+                <h1 class="onboarding-title">To protect account security and ensure transaction compliance, please complete the following steps first.</h1>
                 <div class="onboarding-steps" aria-label="Required setup steps">
                   <div class="onboarding-step">
                     <div class="onboarding-icon" aria-hidden="true">
@@ -3716,39 +4119,39 @@
                 <div class="verification-card identity-verification-card">
                   <div class="verification-form">
                     <div class="verify-field">
-                      <div class="verify-label"><span class="required">*</span> 法人类型</div>
+                      <div class="verify-label"><span class="required">*</span> Legal entity type</div>
                       <div class="radio-line">
-                        <button type="button" class="radio-option selected" data-radio-group="legal-type" data-value="mainland"><span class="radio-control"></span>中国大陆地区法人</button>
-                        <button type="button" class="radio-option" data-radio-group="legal-type" data-value="non-mainland"><span class="radio-control"></span>非中国大陆地区法人</button>
+                        <button type="button" class="radio-option selected" data-radio-group="legal-type" data-value="mainland"><span class="radio-control"></span>Mainland China legal entity</button>
+                        <button type="button" class="radio-option" data-radio-group="legal-type" data-value="non-mainland"><span class="radio-control"></span>Non-mainland China legal entity</button>
                       </div>
                     </div>
 
                     <div class="verify-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人身份证件类型</div>
+                      <div class="verify-label"><span class="required">*</span> Legal representative ID type</div>
                       <select class="verify-select" data-document-type>
-                        <option>香港身份证</option>
-                        <option>台湾身份证</option>
-                        <option>国际护照</option>
-                        <option>港澳台往来大陆通行证</option>
-                        <option>中国大陆居民身份证</option>
+                        <option>Hong Kong ID Card</option>
+                        <option>Taiwan ID Card</option>
+                        <option>International Passport</option>
+                        <option>Mainland Travel Permit for Hong Kong, Macau and Taiwan Residents</option>
+                        <option>Mainland China Resident ID Card</option>
                       </select>
                     </div>
 
                     <div class="upload-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人身份证正反面照片</div>
+                      <div class="verify-label"><span class="required">*</span> Front and back photos of the legal representative's ID</div>
                       <div class="upload-list" data-upload-list>
-                        <button type="button" class="upload-box" data-upload-box aria-label="上传法人身份证正反面照片">+</button>
+                        <button type="button" class="upload-box" data-upload-box aria-label="Upload front and back photos of the legal representative's ID">+</button>
                         <input class="upload-input" data-upload-input type="file" accept="image/jpeg,image/png">
                       </div>
                       <ul class="upload-help">
-                        <li>请上传法人身份证正反面照片;</li>
-                        <li>只支持上传jpg和png格式;</li>
-                        <li>上传图片大小限制为不大于3M</li>
+                        <li>Please upload the front and back photos of the legal representative's ID.</li>
+                        <li>Only JPG and PNG files are supported.</li>
+                        <li>The image size must not exceed 3 MB.</li>
                       </ul>
                     </div>
 
                     <div class="verify-field wide" data-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 身份认证</div>
+                      <div class="verify-label"><span class="required">*</span> Identity verification</div>
                       <div class="qr-verify">
                         <div class="qr-panel">
                           <svg class="qr-code" viewBox="0 0 194 194" aria-label="QR code">
@@ -3778,25 +4181,25 @@
                     </div>
 
                     <div class="verify-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人姓名</div>
+                      <div class="verify-label"><span class="required">*</span> Legal representative name</div>
                       <div class="text-input">
-                        <input data-count-input data-identity-name-input maxlength="60" value="紫红uiuiui" placeholder="Input" aria-label="法人姓名">
+                        <input data-count-input data-identity-name-input maxlength="60" value="Zihong uiuiui" placeholder="Input" aria-label="Legal representative name">
                         <span class="counter">8/60</span>
                       </div>
                     </div>
 
                     <div class="verify-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人身份证件号码</div>
+                      <div class="verify-label"><span class="required">*</span> Legal representative ID number</div>
                       <div class="text-input">
-                        <input data-count-input data-identity-number-input maxlength="60" value="S9012345Z" placeholder="Input" aria-label="法人身份证件号码">
+                        <input data-count-input data-identity-number-input maxlength="60" value="S9012345Z" placeholder="Input" aria-label="Legal representative ID number">
                         <span class="counter">9/60</span>
                       </div>
                     </div>
 
                     <div class="verify-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人出生日期</div>
+                      <div class="verify-label"><span class="required">*</span> Date of birth</div>
                       <div class="date-picker" data-date-picker data-selected-date="2021-05-21">
-                        <button type="button" class="date-input" data-date-trigger aria-expanded="false" aria-label="法人出生日期">
+                        <button type="button" class="date-input" data-date-trigger aria-expanded="false" aria-label="Date of birth">
                           <span class="date-value">21/05/2021</span>
                         </button>
                         <div class="date-popover" data-date-popover hidden></div>
@@ -3804,9 +4207,9 @@
                     </div>
 
                     <div class="verify-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人身份证签发日期</div>
+                      <div class="verify-label"><span class="required">*</span> ID issue date</div>
                       <div class="date-picker" data-date-picker data-selected-date="2021-05-21">
-                        <button type="button" class="date-input" data-date-trigger aria-expanded="false" aria-label="法人身份证签发日期">
+                        <button type="button" class="date-input" data-date-trigger aria-expanded="false" aria-label="ID issue date">
                           <span class="date-value">21/05/2021</span>
                         </button>
                         <div class="date-popover" data-date-popover hidden></div>
@@ -3814,13 +4217,13 @@
                     </div>
 
                     <div class="verify-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人身份证过期日期</div>
+                      <div class="verify-label"><span class="required">*</span> ID expiry date</div>
                       <div class="radio-line">
-                        <button type="button" class="radio-option" data-radio-group="expiry-type" data-value="permanent"><span class="radio-control"></span>永久</button>
-                        <button type="button" class="radio-option selected" data-radio-group="expiry-type" data-value="non-permanent"><span class="radio-control"></span>非永久</button>
+                        <button type="button" class="radio-option" data-radio-group="expiry-type" data-value="permanent"><span class="radio-control"></span>Permanent</button>
+                        <button type="button" class="radio-option selected" data-radio-group="expiry-type" data-value="non-permanent"><span class="radio-control"></span>Non-permanent</button>
                       </div>
                       <div class="date-picker" data-date-picker data-expiry-date data-selected-date="2021-05-21">
-                        <button type="button" class="date-input" data-date-trigger aria-expanded="false" aria-label="法人身份证过期日期">
+                        <button type="button" class="date-input" data-date-trigger aria-expanded="false" aria-label="ID expiry date">
                           <span class="date-value">21/05/2021</span>
                         </button>
                         <div class="date-popover" data-date-popover hidden></div>
@@ -3828,29 +4231,29 @@
                     </div>
 
                     <div class="upload-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人手持身份证正反面</div>
+                      <div class="verify-label"><span class="required">*</span> Photos of the legal representative holding the ID (front and back)</div>
                       <div class="upload-list" data-upload-list>
-                        <button type="button" class="upload-box" data-upload-box aria-label="上传法人手持身份证正反面">+</button>
+                        <button type="button" class="upload-box" data-upload-box aria-label="Upload photos of the legal representative holding the ID front and back">+</button>
                         <input class="upload-input" data-upload-input type="file" accept="image/jpeg,image/png">
                       </div>
                       <ul class="upload-help">
-                        <li>请上传法人手持身份证正反面照片(请保证照片中人脸与身份证的清晰);</li>
-                        <li>只支持上传jpg和png格式;</li>
-                        <li>上传图片大小限制为不大于3M</li>
+                        <li>Please upload photos of the legal representative holding the ID front and back, and ensure the face and ID details are clear.</li>
+                        <li>Only JPG and PNG files are supported.</li>
+                        <li>The image size must not exceed 3 MB.</li>
                       </ul>
                     </div>
 
                     <div class="upload-field" data-non-mainland-only>
-                      <div class="verify-label"><span class="required">*</span> 法人手持身份证正反面+营业执照视频</div>
+                      <div class="verify-label"><span class="required">*</span> Video of the legal representative holding the ID (front and back) and business license</div>
                       <div class="upload-list" data-upload-list>
-                        <button type="button" class="upload-box" data-upload-box aria-label="上传法人手持身份证正反面和营业执照视频">+</button>
+                        <button type="button" class="upload-box" data-upload-box aria-label="Upload a video of the legal representative holding the ID front and back and the business license">+</button>
                         <input class="upload-input" data-upload-input type="file" accept="video/mp4,video/avi,.avi">
                       </div>
                       <ul class="upload-help">
-                        <li>请确保身份证的文字和人脸及营业执照信息可清晰分辨，视频中需要分别展示出身份证正反面并且聚焦;</li>
-                        <li>支持mp4和avi格式;</li>
-                        <li>视频最大支持40M，约20秒左右;</li>
-                        <li>视频模板、指导链接</li>
+                        <li>Please ensure the ID text, face, and business license information are clearly visible. The video must separately show and focus on both sides of the ID.</li>
+                        <li>MP4 and AVI files are supported.</li>
+                        <li>The video size can be up to 40 MB, approximately 20 seconds long.</li>
+                        <li>Video template and guidance link</li>
                       </ul>
                     </div>
                   </div>
@@ -3954,7 +4357,7 @@
                   <path d="M8 5.25C8.41421 5.25 8.75 5.58579 8.75 6V8.75C8.75 9.16421 8.41421 9.5 8 9.5C7.58579 9.5 7.25 9.16421 7.25 8.75V6C7.25 5.58579 7.58579 5.25 8 5.25Z" fill="white"/>
                   <path d="M8 11.75C8.41421 11.75 8.75 11.4142 8.75 11C8.75 10.5858 8.41421 10.25 8 10.25C7.58579 10.25 7.25 10.5858 7.25 11C7.25 11.4142 7.58579 11.75 8 11.75Z" fill="white"/>
                 </svg>
-                <span class="service-fee-alert-message" data-service-alert-message>余额不足：您的服务费余额预计将在<span class="service-fee-alert-highlight">2026年1月8日</span>耗尽，请及时充值确保接口访问不中断</span>
+                <span class="service-fee-alert-message" data-service-alert-message>Low balance: your service fee balance is expected to run out on <span class="service-fee-alert-highlight">Jan 8, 2026</span>. Please top up in time to avoid interruptions to API access.</span>
                 <button type="button" class="service-fee-alert-action" data-open-drawer="service" data-service-alert-action data-service-topup-control>Top up</button>
                 <button type="button" class="service-fee-alert-close" aria-label="Close alert" data-dismiss-service-alert></button>
               </div>
@@ -3988,7 +4391,7 @@
                           <span class="quota-popover-label">Discounted Shop</span>
                         </div>
                       </div>
-                      <p class="quota-popover-desc">你有10个shop可享受<span class="text-highlight">8折</span>活动，单店每日<span class="text-highlight">0.032</span> 元（原价0.04元），折扣额度耗尽后将恢复原价计费</p>
+                      <p class="quota-popover-desc">You have 10 shops eligible for a <span class="text-highlight">20% off</span> promotion. The daily fee per shop is <span class="text-highlight">¥0.032</span> (original price: ¥0.04). Original pricing will resume after the discount quota is used up.</p>
                     </div>
                   </div>
                 </div>
@@ -4364,10 +4767,10 @@
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1ZM8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2ZM7.98751 10.2375C8.40172 10.2375 8.73751 10.5733 8.73751 10.9875C8.73751 11.4017 8.40172 11.7375 7.98751 11.7375C7.57329 11.7375 7.23751 11.4017 7.23751 10.9875C7.23751 10.5733 7.57329 10.2375 7.98751 10.2375ZM8.117 4.60513C9.97012 4.60513 10.7746 6.50497 9.94298 7.72186C9.76926 7.97607 9.56587 8.14547 9.2705 8.31455L9.11487 8.39945L8.95825 8.47994C8.56296 8.68261 8.49391 8.75809 8.49391 9.02099C8.49391 9.29713 8.27005 9.52099 7.99391 9.52099C7.71777 9.52099 7.49391 9.29713 7.49391 9.02099C7.49391 8.34167 7.76504 7.99682 8.35914 7.66626L8.76655 7.45066C8.94241 7.35025 9.04308 7.26634 9.11736 7.15765C9.52116 6.56675 9.11397 5.60513 8.117 5.60513C7.41792 5.60513 6.82815 6.01273 6.75716 6.55276L6.75 6.66245L6.74194 6.75233C6.69961 6.98557 6.49546 7.16245 6.25 7.16245C5.97386 7.16245 5.75 6.93859 5.75 6.66245C5.75 5.44257 6.87194 4.60513 8.117 4.60513Z" fill="currentColor"/>
                     </svg>
                     <div class="finance-note-popover invoice-eligibility-popover" id="invoice-eligibility-popover" role="tooltip">
-                      <p>如果交易符合以下任何一项条件，则该交易将不符合开具发票的条件，也不会显示在此页面上</p>
+                      <p>If a transaction meets any of the following conditions, it is not eligible for invoicing and will not be shown on this page.</p>
                       <ul>
-                        <li>The payment completion date has exceeded 90 days. 付款完成日期已超过90天。</li>
-                        <li>If the invoice is being processed or has been issued successfully, the transaction can no longer be re-applied for and will not be displayed on this page. 发票处于处理中或已成功开具，该笔交易将不再支持重新申请，且不会在此页面显示。</li>
+                        <li>The payment completion date exceeded 90 days.</li>
+                        <li>If the invoice is being processed or has already been issued successfully, the transaction can no longer be submitted again and will not be displayed on this page.</li>
                       </ul>
                     </div>
                   </div>
@@ -4589,7 +4992,7 @@
                         <div class="review-icon" aria-hidden="true"></div>
                         <div class="review-copy">
                           <h2 class="review-title">Successful Submission</h2>
-                          <p class="review-desc">发票申请已成功提交。电子发票将在30个工作日内发送至收件人邮箱。</p>
+                          <p class="review-desc">The invoice application has been submitted successfully. The e-invoice will be sent to the recipient's email within 30 working days.</p>
                         </div>
                         <button class="btn" data-invoice-success-home>View Info</button>
                       </div>
@@ -4717,7 +5120,7 @@
                   <dt>Developer Account</dt>
                   <dd>fake_ziqi.temp0010@shopee.com</dd>
                   <dt>Developer Name</dt>
-                  <dd>紫红uiuiui</dd>
+                  <dd>Zihong uiuiui</dd>
                   <dt>Developer Type</dt>
                   <dd>Third-party Partner Platform</dd>
                   <dt>Identity Verification status</dt>
@@ -4734,7 +5137,7 @@
                     </div>
                   </dd>
                   <dt>Legal Name</dt>
-                  <dd data-account-identity-name>紫红uiuiui</dd>
+                  <dd data-account-identity-name>Zihong uiuiui</dd>
                   <dt>ID Number</dt>
                   <dd data-account-identity-number>S9012345Z</dd>
                   <dt>Country/Area</dt>
@@ -4765,7 +5168,8 @@
           <section class="page" id="page-account-withdraw" data-title="Account Information" data-parent="Personal Center" data-secondary-title="Withdraw Balance">
             <div class="withdraw-page">
               <div class="surface withdraw-card">
-                <section class="withdraw-section" aria-labelledby="withdraw-bank-title">
+                <h1 class="withdraw-page-title">Withdraw Balance</h1>
+                <section class="withdraw-section withdraw-bank-section" aria-labelledby="withdraw-bank-title">
                   <h2 class="withdraw-section-title" id="withdraw-bank-title">Bank Account Information</h2>
                   <div class="form-grid withdraw-form-grid">
                     <div class="form-item">
@@ -4778,13 +5182,7 @@
                     </div>
                     <div class="form-item">
                       <label for="withdraw-bank-branch-name">Bank Branch Name <span class="required">*</span></label>
-                      <select class="select" id="withdraw-bank-branch-name">
-                        <option selected disabled>Select bank branch</option>
-                        <option>Bank of China Shenzhen Branch</option>
-                        <option>ICBC Shenzhen Branch</option>
-                        <option>China Merchants Bank Shenzhen Branch</option>
-                      </select>
-                      <span class="helper">Bank search is supported.</span>
+                      <input class="input" id="withdraw-bank-branch-name" value="China Merchants Bank Shenzhen Branch" placeholder="Enter bank branch name">
                     </div>
                     <div class="form-item">
                       <label for="withdraw-recipient-name">Recipient Name <span class="required">*</span></label>
@@ -4794,42 +5192,101 @@
                 </section>
 
                 <section class="withdraw-section" aria-labelledby="withdraw-amount-title">
-                  <h2 class="withdraw-section-title" id="withdraw-amount-title">Withdrawal Amount Summary</h2>
-                  <div class="summary-box withdraw-summary">
-                    <ol class="withdraw-summary-list">
-                      <li>Current balance: <span class="withdraw-summary-highlight">RMB 120.00</span></li>
-                      <li>
-                        Transaction fee: <span class="withdraw-summary-highlight">RMB 5.00</span> (estimated)
-                        <ul>
-                          <li>Hover over the transaction fee to view the fee rules.</li>
-                        </ul>
-                        <ol type="a">
-                          <li>
-                            Cross-bank transfers within the same city, cross-bank transfers to other cities, and internal transfers to other cities are charged by amount:
-                            <ol type="i">
-                              <li>RMB 10,000 or below: RMB 5 per transaction</li>
-                              <li>RMB 10,000 to RMB 100,000: RMB 10 per transaction</li>
-                              <li>RMB 100,000 to RMB 500,000: RMB 15 per transaction</li>
-                              <li>RMB 500,000 to RMB 1,000,000: RMB 20 per transaction</li>
-                              <li>Above RMB 1,000,000: 0.002% of the amount, capped at RMB 200 per transaction</li>
-                            </ol>
-                          </li>
-                          <li>Internal transfers within the same bank are free of charge.</li>
-                        </ol>
-                      </li>
-                      <li>
-                        Expected Withdrawal Amount: <span class="withdraw-summary-highlight">RMB 115.00</span>
-                        <ul>
-                          <li>Expected Withdrawal Amount = Current balance - Transaction fee</li>
-                        </ul>
-                      </li>
-                    </ol>
+                  <h2 class="withdraw-section-title" id="withdraw-amount-title">Withdraw Amount</h2>
+                  <div class="withdraw-processing-alert" data-withdraw-processing-alert hidden>Your account-deactivation withdrawal request has been accepted. The account is now being deactivated, all account functions are suspended, and Service Market listings have been taken offline. The bank is processing the service fee and deposit refunds. Please wait patiently.</div>
+                  <div class="withdraw-summary-stack">
+                    <div class="summary-box withdraw-summary-card is-success" data-withdraw-summary-card="service-fee">
+                      <div class="withdraw-summary-default">
+                        <div class="summary-row"><span>Current Service Fee</span><strong>¥1,250.00</strong></div>
+                        <div class="summary-row">
+                          <span class="summary-label-with-popover finance-note-with-popover" tabindex="0" aria-describedby="withdraw-service-fee-popover">
+                            <span>Transaction Fee</span>
+                            <svg class="finance-note-info-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1ZM8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2ZM7.98751 10.2375C8.40172 10.2375 8.73751 10.5733 8.73751 10.9875C8.73751 11.4017 8.40172 11.7375 7.98751 11.7375C7.57329 11.7375 7.23751 11.4017 7.23751 10.9875C7.23751 10.5733 7.57329 10.2375 7.98751 10.2375ZM8.117 4.60513C9.97012 4.60513 10.7746 6.50497 9.94298 7.72186C9.76926 7.97607 9.56587 8.14547 9.2705 8.31455L9.11487 8.39945L8.95825 8.47994C8.56296 8.68261 8.49391 8.75809 8.49391 9.02099C8.49391 9.29713 8.27005 9.52099 7.99391 9.52099C7.71777 9.52099 7.49391 9.29713 7.49391 9.02099C7.49391 8.34167 7.76504 7.99682 8.35914 7.66626L8.76655 7.45066C8.94241 7.35025 9.04308 7.26634 9.11736 7.15765C9.52116 6.56675 9.11397 5.60513 8.117 5.60513C7.41792 5.60513 6.82815 6.01273 6.75716 6.55276L6.75 6.66245L6.74194 6.75233C6.69961 6.98557 6.49546 7.16245 6.25 7.16245C5.97386 7.16245 5.75 6.93859 5.75 6.66245C5.75 5.44257 6.87194 4.60513 8.117 4.60513Z" fill="currentColor"/>
+                            </svg>
+                            <div class="finance-note-popover service-topup-fee-popover" id="withdraw-service-fee-popover" role="tooltip">
+                              <p>1. The following transfer fees apply to corporate remittances across banks within the same city, across banks to other cities, and within the same bank to other cities:</p>
+                              <p>- Up to and including RMB 10,000: RMB 5 per transaction</p>
+                              <p>- Above RMB 10,000 and up to and including RMB 100,000: RMB 10 per transaction</p>
+                              <p>- Above RMB 100,000 and up to and including RMB 500,000: RMB 15 per transaction</p>
+                              <p>- Above RMB 500,000 and up to and including RMB 1,000,000: RMB 20 per transaction</p>
+                              <p>- Above RMB 1,000,000: 0.002% of the transfer amount, capped at RMB 200 per transaction.</p>
+                              <p>2. No handling fee is charged for same-city corporate remittances within the same bank.</p>
+                            </div>
+                          </span>
+                          <strong>¥5.00</strong>
+                        </div>
+                        <div class="summary-row total"><span>Expected Withdrawal Amount</span><strong>¥1,245.00</strong></div>
+                      </div>
+                      <div class="withdraw-processing-panel">
+                        <div class="withdraw-processing-head">
+                          <div class="withdraw-processing-title-wrap">
+                            <svg class="withdraw-processing-icon" width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path d="M40 0C62.0914 0 80 17.9086 80 40C80 62.0914 62.0914 80 40 80C17.9086 80 0 62.0914 0 40C0 17.9086 17.9086 0 40 0ZM63.0791 25.877C61.8248 24.586 59.7618 24.5564 58.4707 25.8105L34.8125 48.793L23.0088 37.3623C21.7157 36.1101 19.6526 36.1435 18.4004 37.4365C17.1484 38.7296 17.1816 40.7927 18.4746 42.0449L32.5488 55.6748C33.8141 56.8997 35.8237 56.898 37.0869 55.6709L63.0127 30.4854C64.3036 29.2311 64.3333 27.168 63.0791 25.877Z" fill="#55CC77"/>
+                            </svg>
+                            <span class="withdraw-processing-title">Withdraw Service Fee</span>
+                          </div>
+                          <span class="category-status approved withdraw-processing-badge">Success</span>
+                        </div>
+                        <p class="withdraw-processing-desc">The service fee withdrawal was successful. The funds have been transferred to the bank account you selected.</p>
+                      </div>
+                    </div>
+                    <div class="summary-box withdraw-summary-card" data-withdraw-summary-card="deposit">
+                      <div class="withdraw-summary-default">
+                        <div class="summary-row"><span>Current Deposit</span><strong>¥1,250.00</strong></div>
+                        <div class="summary-row">
+                          <span class="summary-label-with-popover finance-note-with-popover" tabindex="0" aria-describedby="withdraw-deposit-fee-popover">
+                            <span>Transaction Fee</span>
+                            <svg class="finance-note-info-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1ZM8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2ZM7.98751 10.2375C8.40172 10.2375 8.73751 10.5733 8.73751 10.9875C8.73751 11.4017 8.40172 11.7375 7.98751 11.7375C7.57329 11.7375 7.23751 11.4017 7.23751 10.9875C7.23751 10.5733 7.57329 10.2375 7.98751 10.2375ZM8.117 4.60513C9.97012 4.60513 10.7746 6.50497 9.94298 7.72186C9.76926 7.97607 9.56587 8.14547 9.2705 8.31455L9.11487 8.39945L8.95825 8.47994C8.56296 8.68261 8.49391 8.75809 8.49391 9.02099C8.49391 9.29713 8.27005 9.52099 7.99391 9.52099C7.71777 9.52099 7.49391 9.29713 7.49391 9.02099C7.49391 8.34167 7.76504 7.99682 8.35914 7.66626L8.76655 7.45066C8.94241 7.35025 9.04308 7.26634 9.11736 7.15765C9.52116 6.56675 9.11397 5.60513 8.117 5.60513C7.41792 5.60513 6.82815 6.01273 6.75716 6.55276L6.75 6.66245L6.74194 6.75233C6.69961 6.98557 6.49546 7.16245 6.25 7.16245C5.97386 7.16245 5.75 6.93859 5.75 6.66245C5.75 5.44257 6.87194 4.60513 8.117 4.60513Z" fill="currentColor"/>
+                            </svg>
+                            <div class="finance-note-popover service-topup-fee-popover" id="withdraw-deposit-fee-popover" role="tooltip">
+                              <p>1. The following transfer fees apply to corporate remittances across banks within the same city, across banks to other cities, and within the same bank to other cities:</p>
+                              <p>- Up to and including RMB 10,000: RMB 5 per transaction</p>
+                              <p>- Above RMB 10,000 and up to and including RMB 100,000: RMB 10 per transaction</p>
+                              <p>- Above RMB 100,000 and up to and including RMB 500,000: RMB 15 per transaction</p>
+                              <p>- Above RMB 500,000 and up to and including RMB 1,000,000: RMB 20 per transaction</p>
+                              <p>- Above RMB 1,000,000: 0.002% of the transfer amount, capped at RMB 200 per transaction.</p>
+                              <p>2. No handling fee is charged for same-city corporate remittances within the same bank.</p>
+                            </div>
+                          </span>
+                          <strong>¥5.00</strong>
+                        </div>
+                        <div class="summary-row total"><span>Expected Withdrawal Amount</span><strong>¥1,245.00</strong></div>
+                      </div>
+                      <div class="withdraw-processing-panel">
+                        <div class="withdraw-processing-head">
+                          <div class="withdraw-processing-title-wrap">
+                            <svg class="withdraw-processing-icon" width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path d="M40 0C62.0914 0 80 17.9086 80 40C80 62.0914 62.0914 80 40 80C17.9086 80 0 62.0914 0 40C0 17.9086 17.9086 0 40 0ZM35.001 42C35.001 43.6569 36.3441 45 38.001 45H63.001V39H41.001V17H35.001V42Z" fill="#FF831D"/>
+                            </svg>
+                            <span class="withdraw-processing-title">Withdraw Deposit</span>
+                          </div>
+                          <span class="category-status reviewing withdraw-processing-badge">Processing</span>
+                        </div>
+                        <p class="withdraw-processing-desc">The bank is processing the deposit refund. Please wait patiently.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="withdraw-waive-balance">
+                    <div class="withdraw-waive-balance-head">
+                      <span>Current Service Fee</span>
+                      <strong>¥3.00</strong>
+                    </div>
+                    <div class="withdraw-waive-balance-body">
+                      <span class="withdraw-waive-balance-copy">The minimum withdrawal fee is ¥5.00, so the withdrawal requirement is not met. Please confirm to waive the remaining balance.</span>
+                      <button type="button" class="btn password-outline" data-withdraw-waive-confirm>Confirm</button>
+                      <span class="withdraw-waive-balance-confirmed">Confirmed</span>
+                    </div>
                   </div>
                 </section>
               </div>
-              <div class="withdraw-action-bar">
-                <button type="button" class="btn secondary" data-withdraw-back>Cancel</button>
-                <button type="button" class="btn primary">Submit</button>
+              <div class="withdraw-action-bar" data-withdraw-action-bar>
+                <div class="withdraw-total-amount">Expected Total Withdraw Amount: <strong>¥2,490.00</strong></div>
+                <div class="withdraw-action-buttons">
+                  <button type="button" class="btn secondary" data-withdraw-back>Cancel</button>
+                  <button type="button" class="btn primary" data-open-withdraw-password-modal>Submit</button>
+                </div>
               </div>
             </div>
           </section>
@@ -4956,12 +5413,12 @@
           </div>
         </div>
         <div class="deposit-password-field">
-          <label for="modal-payment-password"><span class="required">*</span> 输入密码</label>
+          <label for="modal-payment-password"><span class="required">*</span> Enter password</label>
           <input id="modal-payment-password" class="input" data-payment-password type="password" placeholder="Enter password">
           <div class="deposit-field-helper">Password must meet the rule requirements.</div>
         </div>
         <div class="deposit-password-field">
-          <label for="modal-payment-password-confirm"><span class="required">*</span> 确认密码</label>
+          <label for="modal-payment-password-confirm"><span class="required">*</span> Confirm password</label>
           <input id="modal-payment-password-confirm" class="input" data-payment-password-confirm type="password" placeholder="Confirm password">
           <div class="deposit-field-error" data-payment-password-error hidden>Password entries do not match</div>
         </div>
@@ -4988,6 +5445,8 @@
     const statusOptionsMenu = document.getElementById('status-options-menu');
     const statusModalMask = document.getElementById('status-modal-mask');
     const accountDeleteModalMask = document.getElementById('account-delete-modal-mask');
+    const withdrawPasswordModalMask = document.getElementById('withdraw-password-modal-mask');
+    const withdrawDoubleCheckModalMask = document.getElementById('withdraw-double-check-modal-mask');
     const accountDeleteAppsStep = document.querySelector('[data-account-delete-apps-step]');
     const accountDeleteBalanceDesc = document.querySelector('[data-account-delete-balance-desc]');
     const accountDeletePrimaryAction = document.querySelector('[data-account-delete-manage-apps]');
@@ -5102,6 +5561,47 @@
       accountDeleteModalMask.setAttribute('aria-hidden', 'true');
     }
 
+    function openWithdrawPasswordModal() {
+      if (!withdrawPasswordModalMask) return;
+      withdrawPasswordModalMask.classList.add('open');
+      withdrawPasswordModalMask.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeWithdrawPasswordModal() {
+      if (!withdrawPasswordModalMask) return;
+      withdrawPasswordModalMask.classList.remove('open');
+      withdrawPasswordModalMask.setAttribute('aria-hidden', 'true');
+    }
+
+    function openWithdrawDoubleCheckModal() {
+      if (!withdrawDoubleCheckModalMask) return;
+      withdrawDoubleCheckModalMask.classList.add('open');
+      withdrawDoubleCheckModalMask.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeWithdrawDoubleCheckModal() {
+      if (!withdrawDoubleCheckModalMask) return;
+      withdrawDoubleCheckModalMask.classList.remove('open');
+      withdrawDoubleCheckModalMask.setAttribute('aria-hidden', 'true');
+    }
+
+    function setWithdrawProcessingState() {
+      closeWithdrawDoubleCheckModal();
+      document.querySelector('.withdraw-card')?.classList.add('is-processing');
+      const withdrawAmountTitle = document.getElementById('withdraw-amount-title');
+      if (withdrawAmountTitle) withdrawAmountTitle.textContent = 'Account deactivation withdrawal request in progress';
+      document.querySelector('.withdraw-bank-section')?.setAttribute('hidden', '');
+      document.querySelector('[data-withdraw-processing-alert]')?.removeAttribute('hidden');
+      document.querySelector('[data-withdraw-action-bar]')?.setAttribute('hidden', '');
+      document.querySelectorAll('[data-withdraw-summary-card]').forEach(card => {
+        card.classList.add('is-processing');
+      });
+      document.querySelectorAll('#page-account-withdraw input, #page-account-withdraw .withdraw-action-buttons .btn').forEach(control => {
+        control.disabled = true;
+        control.setAttribute('aria-disabled', 'true');
+      });
+    }
+
     function renderAccountDeleteModalState() {
       if (accountDeleteAppsStep) {
         accountDeleteAppsStep.hidden = accountDeleteAppsManaged;
@@ -5147,7 +5647,7 @@
       if (serviceAlertMessage) {
         serviceAlertMessage.innerHTML = active
           ? 'The deposit balance is less than RMB <span class="service-fee-alert-highlight">30,000,</span> service fee top-ups and API usage are unavailable. Please make up the deposit as soon as possible.'
-          : '余额不足：您的服务费余额预计将在<span class="service-fee-alert-highlight">2026年1月8日</span>耗尽，请及时充值确保接口访问不中断';
+          : 'Low balance: your service fee balance is expected to run out on <span class="service-fee-alert-highlight">Jan 8, 2026</span>. Please top up in time to avoid interruptions to API access.';
       }
       if (serviceAlertAction) {
         serviceAlertAction.dataset.openDrawer = active ? 'deposit' : 'service';
@@ -5375,9 +5875,9 @@
       const documentType = document.querySelector('[data-document-type]');
       if (documentType) {
         if (isMainland) {
-          documentType.value = '中国大陆居民身份证';
-        } else if (documentType.value === '中国大陆居民身份证') {
-          documentType.value = '香港身份证';
+          documentType.value = 'Mainland China Resident ID Card';
+        } else if (documentType.value === 'Mainland China Resident ID Card') {
+          documentType.value = 'Hong Kong ID Card';
         }
       }
       updateVerificationPrimaryButton();
@@ -5498,6 +5998,7 @@
         const isAccountSubpage = pageId === 'account-withdraw' && button.dataset.page === 'account-info';
         button.classList.toggle('active', button.dataset.page === pageId || isAccountSubpage);
       });
+      layout.classList.toggle('withdraw-flow', pageId === 'account-withdraw');
       if (pageId === 'service-fee') {
         setServiceFeeBranch(serviceFeeBranch);
       } else {
@@ -5654,6 +6155,31 @@
       window.scrollTo({ top: 0, left: 0 });
     });
 
+    document.querySelector('[data-open-withdraw-password-modal]')?.addEventListener('click', () => {
+      openWithdrawPasswordModal();
+    });
+
+    document.querySelectorAll('[data-close-withdraw-password-modal]').forEach(button => {
+      button.addEventListener('click', closeWithdrawPasswordModal);
+    });
+
+    document.querySelector('[data-open-withdraw-double-check-modal]')?.addEventListener('click', () => {
+      closeWithdrawPasswordModal();
+      openWithdrawDoubleCheckModal();
+    });
+
+    document.querySelectorAll('[data-close-withdraw-double-check-modal]').forEach(button => {
+      button.addEventListener('click', closeWithdrawDoubleCheckModal);
+    });
+
+    document.querySelector('[data-confirm-withdraw-processing]')?.addEventListener('click', () => {
+      setWithdrawProcessingState();
+    });
+
+    document.querySelector('[data-withdraw-waive-confirm]')?.addEventListener('click', event => {
+      event.currentTarget.closest('.withdraw-waive-balance')?.classList.add('is-confirmed');
+    });
+
     document.querySelector('[data-status-modal-topup]')?.addEventListener('click', () => {
       closeStatusModal();
       setPage('service-fee');
@@ -5667,6 +6193,14 @@
 
     accountDeleteModalMask?.addEventListener('click', event => {
       if (event.target === accountDeleteModalMask) closeAccountDeleteModal();
+    });
+
+    withdrawPasswordModalMask?.addEventListener('click', event => {
+      if (event.target === withdrawPasswordModalMask) closeWithdrawPasswordModal();
+    });
+
+    withdrawDoubleCheckModalMask?.addEventListener('click', event => {
+      if (event.target === withdrawDoubleCheckModalMask) closeWithdrawDoubleCheckModal();
     });
 
     document.querySelectorAll('[data-close-drawer]').forEach(button => {
