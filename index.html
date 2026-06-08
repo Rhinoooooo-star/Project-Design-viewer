@@ -212,6 +212,10 @@
       white-space: nowrap;
     }
 
+    .status-float-button[hidden] {
+      display: none;
+    }
+
     .status-options-menu {
       position: fixed;
       left: 16px;
@@ -996,7 +1000,7 @@
     }
 
     .withdraw-page.footer-fixed {
-      padding-bottom: 72px;
+      padding-bottom: 64px;
     }
 
     .withdraw-card {
@@ -1275,17 +1279,6 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-    }
-
-    .withdraw-page.footer-fixed .withdraw-action-bar {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 18;
-      padding: 16px max(32px, calc((100vw - 1104px) / 2));
-      background: #fff;
-      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.12);
     }
 
     .withdraw-total-amount {
@@ -2409,7 +2402,7 @@
     }
 
     .invoice-apply-page.footer-fixed {
-      padding-bottom: 72px;
+      padding-bottom: 64px;
     }
 
     .invoice-apply-head {
@@ -2801,15 +2794,6 @@
       font-weight: 500;
     }
 
-    .invoice-apply-page.footer-fixed .invoice-flow-actions {
-      position: fixed;
-      left: var(--sidebar-w);
-      right: 0;
-      bottom: 0;
-      padding: 16px 24px;
-      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.12);
-    }
-
     .onboarding-panel {
       min-height: calc(100vh - var(--header-h) - 56px - 48px);
       display: flex;
@@ -2893,7 +2877,7 @@
     }
 
     .verification-page.footer-fixed {
-      padding-bottom: 72px;
+      padding-bottom: 64px;
     }
 
     .verification-stepper {
@@ -3844,15 +3828,6 @@
       background: #fff;
     }
 
-    .verification-page.footer-fixed .verification-footer {
-      position: fixed;
-      left: var(--sidebar-w);
-      right: 0;
-      bottom: 0;
-      margin-top: 0;
-      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.12);
-    }
-
     .verification-footer-inner {
       width: calc(100% - 48px);
       min-width: 0;
@@ -3882,6 +3857,39 @@
 
     #page-service-fee[data-branch="deposit"] .deposit-footer-terms {
       display: flex;
+    }
+
+    .verification-footer,
+    .invoice-flow-actions,
+    .withdraw-action-bar {
+      min-height: 64px;
+      padding: 16px 24px;
+      background: #fff;
+    }
+
+    .verification-footer-inner {
+      width: 100%;
+    }
+
+    .verification-page.footer-fixed .verification-footer,
+    .invoice-apply-page.footer-fixed .invoice-flow-actions,
+    .withdraw-page.footer-fixed .withdraw-action-bar {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      z-index: 18;
+      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.12);
+    }
+
+    .verification-page.footer-fixed .verification-footer,
+    .invoice-apply-page.footer-fixed .invoice-flow-actions {
+      left: var(--sidebar-w);
+    }
+
+    .withdraw-page.footer-fixed .withdraw-action-bar {
+      left: 0;
+      padding-right: max(32px, calc((100vw - 1104px) / 2));
+      padding-left: max(32px, calc((100vw - 1104px) / 2));
     }
 
     .deposit-footer-terms input {
@@ -5706,6 +5714,13 @@
       return '';
     }
 
+    function updateStatusEntryVisibility(secondaryTitle) {
+      if (!statusFloatButton) return;
+      const isSecondaryPage = Boolean(secondaryTitle);
+      statusFloatButton.hidden = isSecondaryPage;
+      if (isSecondaryPage) closeStatusOptionsMenu();
+    }
+
     function updateBreadcrumb() {
       const activePage = document.querySelector('.page.active');
       if (!activePage) return;
@@ -5717,6 +5732,7 @@
       breadcrumb.innerHTML = secondaryTitle
         ? `<button type="button" class="breadcrumb-parent" data-breadcrumb-parent>${activePage.dataset.title}</button><span>›</span><strong>${secondaryTitle}</strong>`
         : `<strong>${activePage.dataset.title}</strong>`;
+      updateStatusEntryVisibility(secondaryTitle);
     }
 
     function navigateBreadcrumbParent() {
@@ -5826,54 +5842,42 @@
       verificationPrimaryButton.textContent = getLegalType() === 'mainland' ? 'Next' : 'Submit';
     }
 
-    function updateVerificationFooterMode() {
-      const verificationPage = document.querySelector('.verification-page');
-      const footer = document.querySelector('.verification-footer');
-      if (!verificationPage || !footer) return;
-      verificationPage.classList.remove('footer-fixed');
-
-      if (serviceFeeBranch !== 'verification' && serviceFeeBranch !== 'deposit') return;
+    function updateFormFooterMode(container, actions, shouldCheck) {
+      if (!container || !actions) return;
+      container.classList.remove('footer-fixed');
+      if (!shouldCheck || actions.hidden) return;
 
       requestAnimationFrame(() => {
-        verificationPage.classList.remove('footer-fixed');
-        const pageTop = verificationPage.getBoundingClientRect().top;
-        const availableHeight = window.innerHeight - pageTop;
-        const inlineHeight = footer.offsetTop + footer.offsetHeight;
-        verificationPage.classList.toggle('footer-fixed', inlineHeight > availableHeight);
+        container.classList.remove('footer-fixed');
+        const containerTop = Math.max(0, container.getBoundingClientRect().top);
+        const availableHeight = window.innerHeight - containerTop;
+        const inlineHeight = actions.offsetTop + actions.offsetHeight;
+        container.classList.toggle('footer-fixed', inlineHeight >= availableHeight - 1);
       });
+    }
+
+    function updateVerificationFooterMode() {
+      updateFormFooterMode(
+        document.querySelector('.verification-page'),
+        document.querySelector('.verification-footer'),
+        serviceFeeBranch === 'verification' || serviceFeeBranch === 'deposit'
+      );
     }
 
     function updateInvoiceFooterMode() {
-      const actions = document.querySelector('.invoice-flow-actions');
-      if (!invoiceFlow || !actions) return;
-      invoiceFlow.classList.remove('footer-fixed');
-
-      if (invoiceFlow.hidden || invoicePage.dataset.invoiceMode !== 'apply' || invoiceFlow.classList.contains('invoice-submitted')) return;
-
-      requestAnimationFrame(() => {
-        invoiceFlow.classList.remove('footer-fixed');
-        const pageTop = invoiceFlow.getBoundingClientRect().top;
-        const availableHeight = window.innerHeight - pageTop;
-        const inlineHeight = actions.offsetTop + actions.offsetHeight;
-        invoiceFlow.classList.toggle('footer-fixed', inlineHeight > availableHeight);
-      });
+      updateFormFooterMode(
+        invoiceFlow,
+        document.querySelector('.invoice-flow-actions'),
+        !invoiceFlow.hidden && invoicePage.dataset.invoiceMode === 'apply' && !invoiceFlow.classList.contains('invoice-submitted')
+      );
     }
 
     function updateWithdrawFooterMode() {
-      const withdrawPage = document.querySelector('.withdraw-page');
-      const actions = document.querySelector('[data-withdraw-action-bar]');
-      if (!withdrawPage || !actions) return;
-      withdrawPage.classList.remove('footer-fixed');
-
-      if (!document.getElementById('page-account-withdraw')?.classList.contains('active') || actions.hidden) return;
-
-      requestAnimationFrame(() => {
-        withdrawPage.classList.remove('footer-fixed');
-        const pageTop = withdrawPage.getBoundingClientRect().top;
-        const availableHeight = window.innerHeight - pageTop;
-        const inlineHeight = actions.offsetTop + actions.offsetHeight;
-        withdrawPage.classList.toggle('footer-fixed', inlineHeight > availableHeight);
-      });
+      updateFormFooterMode(
+        document.querySelector('.withdraw-page'),
+        document.querySelector('[data-withdraw-action-bar]'),
+        document.getElementById('page-account-withdraw')?.classList.contains('active')
+      );
     }
 
     function updateServiceFeeStepper() {
