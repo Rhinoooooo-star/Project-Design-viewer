@@ -995,6 +995,10 @@
       margin: 0 auto;
     }
 
+    .withdraw-page.footer-fixed {
+      padding-bottom: 72px;
+    }
+
     .withdraw-card {
       padding: 24px;
     }
@@ -1021,13 +1025,14 @@
       font-weight: 500;
     }
 
-    .withdraw-form-grid {
-      grid-template-columns: minmax(0, 420px) minmax(0, 420px);
-      max-width: 860px;
+    .form-grid.withdraw-form-grid {
+      grid-template-columns: minmax(0, 420px);
+      justify-content: start;
+      max-width: 420px;
     }
 
-    .withdraw-form-grid .input,
-    .withdraw-form-grid .select {
+    .form-grid.withdraw-form-grid .input,
+    .form-grid.withdraw-form-grid .select {
       width: 100%;
     }
 
@@ -1040,6 +1045,10 @@
 
     .withdraw-summary-card {
       gap: 10px;
+    }
+
+    .withdraw-card:not(.is-processing) .withdraw-summary-card[data-withdraw-summary-card="service-fee"] {
+      display: none;
     }
 
     .withdraw-card.is-processing .withdraw-summary-stack {
@@ -1266,6 +1275,17 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
+    }
+
+    .withdraw-page.footer-fixed .withdraw-action-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 18;
+      padding: 16px max(32px, calc((100vw - 1104px) / 2));
+      background: #fff;
+      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.12);
     }
 
     .withdraw-total-amount {
@@ -5282,7 +5302,7 @@
                 </section>
               </div>
               <div class="withdraw-action-bar" data-withdraw-action-bar>
-                <div class="withdraw-total-amount">Expected Total Withdraw Amount: <strong>¥2,490.00</strong></div>
+                <div class="withdraw-total-amount">Expected Total Withdraw Amount: <strong>¥1,245.00</strong></div>
                 <div class="withdraw-action-buttons">
                   <button type="button" class="btn secondary" data-withdraw-back>Cancel</button>
                   <button type="button" class="btn primary" data-open-withdraw-password-modal>Submit</button>
@@ -5600,6 +5620,7 @@
         control.disabled = true;
         control.setAttribute('aria-disabled', 'true');
       });
+      updateWithdrawFooterMode();
     }
 
     function renderAccountDeleteModalState() {
@@ -5838,6 +5859,23 @@
       });
     }
 
+    function updateWithdrawFooterMode() {
+      const withdrawPage = document.querySelector('.withdraw-page');
+      const actions = document.querySelector('[data-withdraw-action-bar]');
+      if (!withdrawPage || !actions) return;
+      withdrawPage.classList.remove('footer-fixed');
+
+      if (!document.getElementById('page-account-withdraw')?.classList.contains('active') || actions.hidden) return;
+
+      requestAnimationFrame(() => {
+        withdrawPage.classList.remove('footer-fixed');
+        const pageTop = withdrawPage.getBoundingClientRect().top;
+        const availableHeight = window.innerHeight - pageTop;
+        const inlineHeight = actions.offsetTop + actions.offsetHeight;
+        withdrawPage.classList.toggle('footer-fixed', inlineHeight > availableHeight);
+      });
+    }
+
     function updateServiceFeeStepper() {
       const activeStep = serviceFeeBranch === 'deposit' ? 'deposit' : 'identity';
       serviceFeePage.querySelectorAll('.verification-step').forEach(step => {
@@ -6006,6 +6044,7 @@
       }
       updateBreadcrumb();
       if (pageId === 'invoice') updateInvoiceFooterMode();
+      if (pageId === 'account-withdraw') updateWithdrawFooterMode();
     }
 
     navButtons.forEach(button => {
@@ -6178,6 +6217,7 @@
 
     document.querySelector('[data-withdraw-waive-confirm]')?.addEventListener('click', event => {
       event.currentTarget.closest('.withdraw-waive-balance')?.classList.add('is-confirmed');
+      updateWithdrawFooterMode();
     });
 
     document.querySelector('[data-status-modal-topup]')?.addEventListener('click', () => {
@@ -6260,6 +6300,7 @@
 
     window.addEventListener('resize', updateVerificationFooterMode);
     window.addEventListener('resize', updateInvoiceFooterMode);
+    window.addEventListener('resize', updateWithdrawFooterMode);
 
     document.querySelectorAll('[data-invoice-multiplex-picker]').forEach(picker => {
       picker.querySelector('[data-invoice-multiplex-trigger]').addEventListener('click', () => {
