@@ -674,6 +674,228 @@
       cursor: pointer;
     }
 
+    .category-action-list {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .category-action-list .divider {
+      width: 1px;
+      height: 12px;
+      background: var(--field-line);
+    }
+
+    #page-service-management[data-service-mode="create"] [data-service-list] {
+      display: none;
+    }
+
+    #page-service-management[data-service-mode="edit"] [data-service-list],
+    #page-service-management[data-service-mode="detail"] [data-service-list] {
+      display: none;
+    }
+
+    .service-create-page[hidden] {
+      display: none;
+    }
+
+    .service-create-card {
+      padding: 24px;
+    }
+
+    .service-create-page.footer-fixed .service-create-card {
+      margin-bottom: 88px;
+    }
+
+    .service-create-card > .invoice-section-heading {
+      margin-bottom: 16px;
+      font-size: 20px;
+      line-height: 32px;
+    }
+
+    .form-grid.service-form-grid {
+      grid-template-columns: minmax(0, 1fr);
+      width: 100%;
+      max-width: 780px;
+    }
+
+    .form-grid.service-form-grid[hidden],
+    .service-detail-list[hidden],
+    .service-create-actions[hidden] {
+      display: none;
+    }
+
+    .service-detail-list {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 20px 24px;
+      max-width: 780px;
+      margin: 0;
+      line-height: 20px;
+    }
+
+    .service-detail-list dt {
+      margin: 0;
+      color: var(--text-2);
+    }
+
+    .service-detail-list dd {
+      margin: 0;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .service-detail-logo {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--field-line);
+      border-radius: var(--radius);
+      background: #fafafa;
+      color: var(--text-3);
+      font-size: 12px;
+      line-height: 16px;
+      text-align: center;
+    }
+
+    .service-form-grid .input,
+    .service-form-grid .select {
+      width: 100%;
+    }
+
+    .textarea {
+      min-height: 88px;
+      resize: vertical;
+      font: inherit;
+      line-height: 20px;
+    }
+
+    .field-tip {
+      margin: 0;
+      color: var(--text-3);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .field-tip-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-3);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .field-tip-list li + li {
+      margin-top: 4px;
+    }
+
+    .service-rich-editor {
+      width: 100%;
+      border: 1px solid var(--field-line);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .service-rich-toolbar {
+      display: flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0;
+      border-bottom: 1px solid var(--field-line);
+      background: #fff;
+    }
+
+    .service-rich-tool {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--text-2);
+      font: inherit;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .service-rich-tool:hover {
+      background: #f6f6f6;
+      color: var(--primary);
+    }
+
+    .service-rich-tool svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+      stroke: currentColor;
+    }
+
+    .service-rich-tool.text-tool {
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .service-rich-tool.italic-tool {
+      font-style: italic;
+    }
+
+    .service-rich-tool.underline-tool {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .service-rich-select {
+      width: 112px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+      line-height: 20px;
+      cursor: pointer;
+    }
+
+    .service-rich-select svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--text-3);
+    }
+
+    .service-rich-separator {
+      width: 1px;
+      height: 40px;
+      background: var(--field-line);
+      flex: 0 0 auto;
+    }
+
+    .service-rich-body {
+      min-height: 140px;
+      padding: 8px 12px;
+      color: var(--text);
+      line-height: 20px;
+      outline: none;
+    }
+
+    .service-rich-body:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-3);
+    }
+
+    .service-create-actions {
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
     .account-profile-panel {
       min-height: calc(100vh - var(--header-h) - 56px - 48px);
       padding: 0;
@@ -1761,6 +1983,8 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      flex: 1 1 auto;
+      min-width: 0;
       color: #0a1f44;
       font-size: 14px;
       line-height: 18px;
@@ -1774,13 +1998,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      min-width: 0;
     }
 
     .dashboard-inline-filter {
-      flex: 0 0 auto;
-      width: fit-content;
+      flex: 0 1 92px;
+      width: auto;
       min-width: 0;
-      max-width: max-content;
+      max-width: 92px;
       height: 18px;
       border: 0;
       padding: 0 16px 0 0;
@@ -1925,6 +2150,10 @@
       border-radius: 0;
       background: transparent;
       padding: 0;
+    }
+
+    .service-filter-bar {
+      margin-bottom: 0;
     }
 
     .filter {
@@ -3888,6 +4117,7 @@
 
     .verification-page.footer-fixed .verification-footer,
     .invoice-apply-page.footer-fixed .invoice-flow-actions,
+    .service-create-page.footer-fixed .service-create-actions,
     .withdraw-page.footer-fixed .withdraw-action-bar {
       position: fixed;
       right: 0;
@@ -3897,7 +4127,8 @@
     }
 
     .verification-page.footer-fixed .verification-footer,
-    .invoice-apply-page.footer-fixed .invoice-flow-actions {
+    .invoice-apply-page.footer-fixed .invoice-flow-actions,
+    .service-create-page.footer-fixed .service-create-actions {
       left: var(--sidebar-w);
     }
 
@@ -4073,6 +4304,7 @@
             Service Market
           </div>
           <button class="nav-button" data-page="category">Category Management</button>
+          <button class="nav-button" data-page="service-management">Service Management</button>
         </div>
         <div class="nav-section" data-mode="console">
           <div class="nav-title">
@@ -4482,7 +4714,6 @@
                   <div class="dashboard-card">
                     <div class="dashboard-label">
                       Current Authorized Shop Quantity
-                      <span class="dashboard-info" title="Current number of authorized shops">?</span>
                     </div>
                     <p class="dashboard-value">1,573</p>
                     <div class="dashboard-card-footer">
@@ -4494,7 +4725,6 @@
                     <div class="dashboard-card-head">
                       <div class="dashboard-label">
                         Daily Average Consumed Shop
-                        <span class="dashboard-info" title="Average daily number of shops consuming the service">?</span>
                       </div>
                       <select class="dashboard-inline-filter" aria-label="Daily average consumed shop time range">
                         <option selected>Last 7 Days</option>
@@ -4512,7 +4742,6 @@
                     <div class="dashboard-card-head">
                       <div class="dashboard-label">
                         Daily Average Spend
-                        <span class="dashboard-info" title="Average daily service fee spend">?</span>
                       </div>
                       <select class="dashboard-inline-filter" aria-label="Daily average spend time range">
                         <option selected>Last 7 Days</option>
@@ -5161,6 +5390,232 @@
             </div>
           </section>
 
+          <section class="page" id="page-service-management" data-title="Service Management" data-parent="Service Market" data-service-mode="list">
+            <div class="surface category-panel" data-service-list>
+              <div class="category-head">
+                <h1 class="section-title">Service Management</h1>
+                <button class="btn primary category-action-btn" data-create-service>Create service</button>
+              </div>
+              <div class="filter-bar plain service-filter-bar" aria-label="Service filters">
+                <div class="filter">
+                  <label for="service-filter-name">Service Name</label>
+                  <input class="input" id="service-filter-name" placeholder="Input">
+                </div>
+                <div class="filter">
+                  <label for="service-filter-category">Category</label>
+                  <select class="select" id="service-filter-category">
+                    <option selected>All</option>
+                    <option>Store Operations</option>
+                    <option>Business Training</option>
+                    <option>Data Services</option>
+                  </select>
+                </div>
+                <div class="filter">
+                  <label>Create time</label>
+                  <div class="date-picker" data-date-picker data-selected-date="2026-05-13">
+                    <button type="button" class="date-input" data-date-trigger aria-expanded="false" aria-label="Service create time">
+                      <span class="date-value">13/05/2026</span>
+                    </button>
+                    <div class="date-popover" data-date-popover hidden></div>
+                  </div>
+                </div>
+                <div class="filter">
+                  <label for="service-filter-status">Status</label>
+                  <select class="select" id="service-filter-status">
+                    <option selected>All</option>
+                    <option>Reviewing</option>
+                    <option>Published</option>
+                    <option>Rejected</option>
+                  </select>
+                </div>
+                <button class="btn primary">Search</button>
+                <button class="btn">Reset</button>
+              </div>
+              <div class="category-table-wrap">
+                <table class="category-table">
+                  <colgroup>
+                    <col style="width:320px">
+                    <col style="width:190px">
+                    <col style="width:190px">
+                    <col style="width:150px">
+                    <col style="width:150px">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>Service Name</th>
+                      <th>Submission Time</th>
+                      <th>Update time</th>
+                      <th>Status</th>
+                      <th class="action-col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Shopee Store Setup Consultation</td>
+                      <td>2026-05-13 11:20</td>
+                      <td>2026-05-13 14:36</td>
+                      <td><span class="category-status reviewing">Reviewing</span></td>
+                      <td class="action-col">
+                        <span class="category-action-list">
+                          <a class="category-link" data-service-detail data-service-name="Shopee Store Setup Consultation" data-service-status="Reviewing">Detail</a>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Business Training Starter Package</td>
+                      <td>2026-04-28 09:45</td>
+                      <td>2026-05-02 16:18</td>
+                      <td><span class="category-status approved">Published</span></td>
+                      <td class="action-col">
+                        <span class="category-action-list">
+                          <a class="category-link" data-service-detail data-service-name="Business Training Starter Package" data-service-status="Published">Detail</a>
+                          <a class="category-link" data-service-edit data-service-name="Business Training Starter Package" data-service-status="Published">Edit</a>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Store Operations Health Check</td>
+                      <td>2026-04-12 15:32</td>
+                      <td>2026-04-14 10:05</td>
+                      <td><span class="category-status resubmit">Rejected</span></td>
+                      <td class="action-col">
+                        <span class="category-action-list">
+                          <a class="category-link" data-service-detail data-service-name="Store Operations Health Check" data-service-status="Rejected">Detail</a>
+                          <a class="category-link" data-service-edit data-service-name="Store Operations Health Check" data-service-status="Rejected">Edit</a>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Data Report Configuration Service</td>
+                      <td>2026-03-22 09:13</td>
+                      <td>2026-03-25 13:20</td>
+                      <td><span class="category-status approved">Published</span></td>
+                      <td class="action-col">
+                        <span class="category-action-list">
+                          <a class="category-link" data-service-detail data-service-name="Data Report Configuration Service" data-service-status="Published">Detail</a>
+                          <a class="category-link" data-service-edit data-service-name="Data Report Configuration Service" data-service-status="Published">Edit</a>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="service-create-page" data-service-create hidden>
+              <div class="surface invoice-apply-card service-create-card">
+                <h2 class="invoice-section-heading">Service Info</h2>
+                <div class="form-grid service-form-grid" data-service-form>
+                  <div class="form-item">
+                    <label for="create-service-name"><span class="required">*</span> Service Name</label>
+                    <input class="input" id="create-service-name" placeholder="Customize your external service display name">
+                    <p class="field-tip">Keep the name short and clear so merchants can understand the service quickly.</p>
+                  </div>
+                  <div class="form-item">
+                    <label for="create-service-category"><span class="required">*</span> Category</label>
+                    <select class="select" id="create-service-category">
+                      <option selected>Store Operations &gt; Business Training</option>
+                      <option>Store Operations &gt; Account Setup</option>
+                      <option>Data Services &gt; Report Configuration</option>
+                    </select>
+                    <ul class="field-tip-list">
+                      <li>Only categories you submitted and passed review can be selected.</li>
+                      <li>If no category is available, complete the category qualification review first.</li>
+                    </ul>
+                  </div>
+                  <div class="form-item">
+                    <label for="create-service-introduction"><span class="required">*</span> Introduction</label>
+                    <textarea class="input textarea" id="create-service-introduction" placeholder="Briefly summarize the core capability of this service"></textarea>
+                    <p class="field-tip">Summarize the service's core capability.</p>
+                  </div>
+                  <div class="form-item">
+                    <label><span class="required">*</span> Details</label>
+                    <div class="service-rich-editor">
+                      <div class="service-rich-toolbar" aria-label="Service details toolbar">
+                        <button type="button" class="service-rich-tool" aria-label="Undo">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6.2 4.2H3.1v-3" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.3 4.2A5.4 5.4 0 1 1 4.8 12" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                        <button type="button" class="service-rich-tool" aria-label="Redo">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.8 4.2h3.1v-3" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.7 4.2A5.4 5.4 0 1 0 11.2 12" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                        <span class="service-rich-separator" aria-hidden="true"></span>
+                        <button type="button" class="service-rich-select" aria-label="Text style">
+                          <span>Normal</span>
+                          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <span class="service-rich-separator" aria-hidden="true"></span>
+                        <button type="button" class="service-rich-tool text-tool" aria-label="Bold">B</button>
+                        <button type="button" class="service-rich-tool text-tool italic-tool" aria-label="Italic">I</button>
+                        <button type="button" class="service-rich-tool text-tool underline-tool" aria-label="Underline">U</button>
+                        <span class="service-rich-separator" aria-hidden="true"></span>
+                        <button type="button" class="service-rich-tool" aria-label="Align left">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 4h10M3 8h7M3 12h10" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                        <button type="button" class="service-rich-tool" aria-label="Align center">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 4h10M5 8h6M3 12h10" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                        <button type="button" class="service-rich-tool" aria-label="Align right">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 4h10M6 8h7M3 12h10" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                        <span class="service-rich-separator" aria-hidden="true"></span>
+                        <button type="button" class="service-rich-tool" aria-label="Ordered list">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M7 4h6M7 8h6M7 12h6" stroke-width="1.3" stroke-linecap="round"/><path d="M3 3.5h1v3M3 6.5h2M3 10.3c0-.7.5-1.1 1-1.1s1 .4 1 1c0 .4-.2.7-.5 1L3 12.8h2" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <button type="button" class="service-rich-tool" aria-label="Bulleted list">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M7 4h6M7 8h6M7 12h6" stroke-width="1.3" stroke-linecap="round"/><path d="M3.5 4h.1M3.5 8h.1M3.5 12h.1" stroke-width="2.2" stroke-linecap="round"/></svg>
+                        </button>
+                        <span class="service-rich-separator" aria-hidden="true"></span>
+                        <button type="button" class="service-rich-tool" aria-label="Insert image">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 3h10v10H3z" stroke-width="1.3" stroke-linejoin="round"/><path d="m4.5 11 3-3 2 2 1-1 2 2" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 5.5h.1" stroke-width="2" stroke-linecap="round"/></svg>
+                        </button>
+                        <span class="service-rich-separator" aria-hidden="true"></span>
+                        <button type="button" class="service-rich-tool" aria-label="Code">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 5-3 3 3 3M10 5l3 3-3 3" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                      </div>
+                      <div class="service-rich-body" contenteditable="true" data-placeholder="Describe the service function with images or text, usage scenarios, pricing model, and tutorial links."></div>
+                    </div>
+                    <p class="field-tip">Use images or text to describe service functions, use cases, pricing model, and tutorial links.</p>
+                  </div>
+                  <div class="form-item">
+                    <label><span class="required">*</span> Logo</label>
+                    <div class="upload-field">
+                      <div class="upload-list" data-upload-list>
+                        <button type="button" class="upload-box" data-upload-box aria-label="Upload service logo">+</button>
+                        <input class="upload-input" data-upload-input type="file" accept="image/jpeg,image/png">
+                      </div>
+                    </div>
+                    <p class="field-tip">Upload a clear dedicated brand logo for this service.</p>
+                  </div>
+                  <div class="form-item">
+                    <label for="create-service-website">Official website</label>
+                    <input class="input" id="create-service-website" placeholder="https://">
+                    <p class="field-tip">When clicking Learn more, users will be redirected to the official website. Leave it empty to hide the button.</p>
+                  </div>
+                </div>
+                <dl class="service-detail-list" data-service-detail-view hidden>
+                  <dt>Service Name</dt>
+                  <dd data-service-detail-name>Shopee Store Setup Consultation</dd>
+                  <dt>Category</dt>
+                  <dd data-service-detail-category>Store Operations &gt; Business Training</dd>
+                  <dt>Introduction</dt>
+                  <dd data-service-detail-introduction>Briefly summarize the core capability of this service.</dd>
+                  <dt>Details</dt>
+                  <dd data-service-detail-details>Describe the service function with images or text, usage scenarios, pricing model, and tutorial links.</dd>
+                  <dt>Logo</dt>
+                  <dd><div class="service-detail-logo">Service<br>Logo</div></dd>
+                  <dt>Official website</dt>
+                  <dd data-service-detail-website>https://partner.example.com/service</dd>
+                  <dt>Status</dt>
+                  <dd data-service-detail-status>Reviewing</dd>
+                </dl>
+              </div>
+              <div class="invoice-flow-actions service-create-actions" data-service-actions>
+                <button type="button" class="btn" data-cancel-create-service>Cancel</button>
+                <button type="button" class="btn primary" data-submit-create-service>Submit</button>
+              </div>
+            </div>
+          </section>
+
           <section class="page" id="page-account-info" data-title="Account Information" data-parent="Personal Center">
             <div class="surface account-profile-panel">
               <div class="account-profile-header">
@@ -5510,6 +5965,7 @@
     const invoiceFlow = document.getElementById('invoice-flow');
     const invoiceDetail = document.getElementById('invoice-detail');
     const invoicePage = document.getElementById('page-invoice');
+    const serviceManagementPage = document.getElementById('page-service-management');
     const serviceFeePage = document.getElementById('page-service-fee');
     const verificationPrimaryButton = document.querySelector('[data-submit-verification]');
     const depositInput = document.querySelector('[data-deposit-input]');
@@ -5743,6 +6199,44 @@
       return '';
     }
 
+    function getServiceManagementSecondaryTitle() {
+      if (serviceManagementPage.dataset.serviceMode === 'create') return 'Create service';
+      if (serviceManagementPage.dataset.serviceMode === 'edit') return 'Edit service';
+      if (serviceManagementPage.dataset.serviceMode === 'detail') return 'Service details';
+      return '';
+    }
+
+    function getServiceDataFromTrigger(trigger) {
+      const row = trigger.closest('tr');
+      const cells = row ? Array.from(row.children) : [];
+      return {
+        name: trigger.dataset.serviceName || cells[0]?.textContent.trim() || 'Shopee Store Setup Consultation',
+        category: 'Store Operations > Business Training',
+        introduction: 'Briefly summarize the core capability of this service.',
+        details: 'Describe the service function with images or text, usage scenarios, pricing model, and tutorial links.',
+        website: 'https://partner.example.com/service',
+        status: trigger.dataset.serviceStatus || cells[3]?.textContent.trim() || 'Reviewing'
+      };
+    }
+
+    function setServiceFormData(data, shouldClear = false) {
+      document.getElementById('create-service-name').value = shouldClear ? '' : data.name;
+      document.getElementById('create-service-category').value = data.category;
+      document.getElementById('create-service-introduction').value = shouldClear ? '' : data.introduction;
+      document.querySelector('.service-rich-body').textContent = shouldClear ? '' : data.details;
+      document.getElementById('create-service-website').value = shouldClear ? '' : data.website;
+    }
+
+    function setServiceDetailData(data) {
+      const statusClass = data.status === 'Published' ? 'approved' : data.status === 'Rejected' ? 'resubmit' : 'reviewing';
+      document.querySelector('[data-service-detail-name]').textContent = data.name;
+      document.querySelector('[data-service-detail-category]').textContent = data.category;
+      document.querySelector('[data-service-detail-introduction]').textContent = data.introduction;
+      document.querySelector('[data-service-detail-details]').textContent = data.details;
+      document.querySelector('[data-service-detail-website]').textContent = data.website;
+      document.querySelector('[data-service-detail-status]').innerHTML = `<span class="category-status ${statusClass}">${data.status}</span>`;
+    }
+
     function updateStatusEntryVisibility(secondaryTitle) {
       if (!statusFloatButton) return;
       const isSecondaryPage = Boolean(secondaryTitle);
@@ -5756,6 +6250,7 @@
       let secondaryTitle = '';
       if (activePage.id === 'page-service-fee') secondaryTitle = getServiceFeeSecondaryTitle();
       if (activePage.id === 'page-invoice') secondaryTitle = getInvoiceSecondaryTitle();
+      if (activePage.id === 'page-service-management') secondaryTitle = getServiceManagementSecondaryTitle();
       if (activePage.dataset.secondaryTitle) secondaryTitle = activePage.dataset.secondaryTitle;
 
       breadcrumb.innerHTML = secondaryTitle
@@ -5777,6 +6272,9 @@
         if (invoiceDetail) invoiceDetail.hidden = true;
         updateBreadcrumb();
         updateInvoiceFooterMode();
+      }
+      if (activePage.id === 'page-service-management') {
+        setServiceManagementMode('list');
       }
       if (activePage.id === 'page-account-withdraw') {
         setPage('account-info');
@@ -5907,6 +6405,32 @@
         document.querySelector('[data-withdraw-action-bar]'),
         document.getElementById('page-account-withdraw')?.classList.contains('active')
       );
+    }
+
+    function updateServiceCreateFooterMode() {
+      updateFormFooterMode(
+        document.querySelector('[data-service-create]'),
+        document.querySelector('.service-create-actions'),
+        serviceManagementPage.classList.contains('active') && ['create', 'edit'].includes(serviceManagementPage.dataset.serviceMode)
+      );
+    }
+
+    function setServiceManagementMode(mode, data = getServiceDataFromTrigger(document.createElement('span'))) {
+      serviceManagementPage.dataset.serviceMode = mode;
+      const createPanel = serviceManagementPage.querySelector('[data-service-create]');
+      const formPanel = serviceManagementPage.querySelector('[data-service-form]');
+      const detailPanel = serviceManagementPage.querySelector('[data-service-detail-view]');
+      const actionPanel = serviceManagementPage.querySelector('[data-service-actions]');
+      const isSubpage = ['create', 'edit', 'detail'].includes(mode);
+      if (createPanel) createPanel.hidden = !isSubpage;
+      if (formPanel) formPanel.hidden = mode === 'detail';
+      if (detailPanel) detailPanel.hidden = mode !== 'detail';
+      if (actionPanel) actionPanel.hidden = mode === 'detail';
+      if (mode === 'create') setServiceFormData(data, true);
+      if (mode === 'edit') setServiceFormData(data);
+      if (mode === 'detail') setServiceDetailData(data);
+      updateBreadcrumb();
+      updateServiceCreateFooterMode();
     }
 
     function updateServiceFeeStepper() {
@@ -6075,9 +6599,11 @@
       } else {
         layout.classList.remove('auth-flow');
       }
+      if (pageId === 'service-management') setServiceManagementMode('list');
       updateBreadcrumb();
       if (pageId === 'invoice') updateInvoiceFooterMode();
       if (pageId === 'account-withdraw') updateWithdrawFooterMode();
+      if (pageId === 'service-management') updateServiceCreateFooterMode();
     }
 
     navButtons.forEach(button => {
@@ -6334,6 +6860,33 @@
     window.addEventListener('resize', updateVerificationFooterMode);
     window.addEventListener('resize', updateInvoiceFooterMode);
     window.addEventListener('resize', updateWithdrawFooterMode);
+    window.addEventListener('resize', updateServiceCreateFooterMode);
+
+    document.querySelector('[data-create-service]')?.addEventListener('click', () => {
+      setServiceManagementMode('create');
+    });
+
+    document.querySelectorAll('[data-service-detail]').forEach(link => {
+      link.addEventListener('click', () => {
+        setServiceManagementMode('detail', getServiceDataFromTrigger(link));
+      });
+    });
+
+    document.querySelectorAll('[data-service-edit]').forEach(link => {
+      link.addEventListener('click', () => {
+        setServiceManagementMode('edit', getServiceDataFromTrigger(link));
+      });
+    });
+
+    document.querySelector('[data-cancel-create-service]')?.addEventListener('click', () => {
+      setServiceManagementMode('list');
+    });
+
+    document.querySelector('[data-submit-create-service]')?.addEventListener('click', () => {
+      const isEdit = serviceManagementPage.dataset.serviceMode === 'edit';
+      setServiceManagementMode('list');
+      showToast(isEdit ? 'Service updated successfully' : 'Service created successfully');
+    });
 
     document.querySelectorAll('[data-invoice-multiplex-picker]').forEach(picker => {
       picker.querySelector('[data-invoice-multiplex-trigger]').addEventListener('click', () => {
